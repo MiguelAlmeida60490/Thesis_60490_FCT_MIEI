@@ -254,7 +254,7 @@
 
 \options{/novathesis/.new family,
   % DOCUMENT
-  doctype/.new choice           = {phd, phdprop, phdplan, msc, mscplan, bsc, plain},
+  doctype/.new choice           = {mscplan, bsc, plain},
   docstatus/.new choice         = {unset, working, provisional, final}, % in not defined by user, unset will be replaced  “working”
   media/.new choice             = {screen, paper},
   spine/layout/.new choice      = {unset, no, full, trim},
@@ -290,7 +290,7 @@
   lang/.new cmd                 = {\optionsalso{/novathesis/lang/main=#1,
                                                 /novathesis/lang/cover=#1,
                                                 /novathesis/lang/copyright=#1}},
-  lang                          = en,
+  lang                          = pt,
   % PRINT ON/OFF
   print/committee/.new toggle   = false,
   print/adviser/.new toggle     = true,     % fake option - adviser should always be printed
@@ -618,11 +618,11 @@ end
 %% MANAGE DOCUMENT CLASSES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \options{/@nt/document/.cd,
-   docclass/.new choice={phd=phd, phdprop=phd, phdplan=phd, 
+   docclass/.new choice={
                          msc=msc, mscplan=msc, 
                          bsc=bsc, 
                          plain=plain},
-   docmain/.new list={phd, msc, bsc, plain},
+   docmain/.new list={msc, bsc, plain},
 }
 
 % --------------------------------------------------------
@@ -810,7 +810,7 @@ end
 \newdata{committeetitlestringfont}
 
 \newdata{committeestring}
-\newdata{committeestringpre}
+\newdata{committeestringpredegreeprefix}
 \newdata{committeestringpost}
 \newdata{committeestringfont}
 
@@ -1198,7 +1198,7 @@ end
 \def\@ntspecialization(#1)#2{%
   \datamatch{\specmatch}{specializationstring}(%
             {\@DOCTYPE,\@DEGREEACR,\@LANG@COVER},%
-            {\@DOCCLASS,\@DEGREEACR,\@LANG@COVER}%
+            {\@DOCCLASS,\@DEGREEACR,\@LANG@COVER},%
             {\@DEGREEACR,\@LANG@COVER},%
             {\@DOCTYPE,\@LANG@COVER},%
             {\@DOCCLASS,\@LANG@COVER},%
@@ -1292,7 +1292,7 @@ end
   }%
   \ntdocdate(#1,month,text):={\monthtotext[\@NTDM]}%
 }
-\ntdocdate(default):={2000-09-01}
+\ntdocdate(default):={2025-02-28}
 \ntdate(submission){\thentdocdate(default)}
 \ntdate(exam){\thentdocdate(default)}
 
