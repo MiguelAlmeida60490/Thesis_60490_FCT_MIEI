@@ -14,56 +14,21 @@ Este capítulo tem como objetivo introduzir o tema e objetivos desta dissertaç�
 
 \section{Motivação}
 
-Nos dias de hoje, com a crescente complexidade de software moderno e ritmo acelerado de
-desenvolvimento, a etapa de Revisão de Código é cada vez uma etapa mais crítica no ciclo
-de desenvolvimento de software~\cite{Tufano2024}\cite{Chen2023Survey}.
-Este processo consiste em assegurar a segurança e qualidade do código desenvolvido, bem como garantir que o mesmo esteja em conformidade
-com não só as boas práticas de engenharia mas também as boas práticas definidas pela
-empresa, dona do software desenvolvido~\cite{Rahman2024LLMReview}.
+O aumento da complexidade do software moderno e o ritmo acelerado de desenvolvimento tornam a Revisão de Código uma etapa essencial no ciclo de vida do software. Este processo garante a qualidade, segurança e conformidade do código com as boas práticas de engenharia e com os padrões internos definidos pelas organizações~\cite{tufano2024slr,llmsurvey2023}.
 
-No entanto, este processo é bastante exigente, longo e, normalmente, tem que ser realizado
-por mais do que uma pessoa para que se evite ao máximo erros no final deste processo~\cite{Liang2024}.
-Em projetos empresariais, onde são submetidos inúmeros commits e pull requests diariamente,
-as equipas responsáveis pela revisão de código lidam com bastantes alterações que necessitam de uma análise cuidadosa
-para que não existam erros quando estas mudanças chegam ao produto oficial a ser desenvolvido,
-o que pode resultar em atrasos nas entregas, inconsistências e risco de existirem problemas
-ao nível de produto~\cite{Rahman2024LLMReview}\cite{Liang2024}.
+Contudo, a revisão de código continua a ser uma tarefa exigente e demorada, que frequentemente exige múltiplos revisores para evitar a introdução de erros~\cite{liang2024automation}. Em ambientes empresariais com grande volume de commits e pull requests, os revisores lidam diariamente com alterações extensas que exigem análise cuidadosa. Isto pode originar atrasos, inconsistências e risco de falhas quando as mudanças chegam ao produto final~\cite{rahman2024empirical,llmsurvey2023}.
 
-No contexto onde esta tese será aplicada, os desafios de Code Review tornam-se evidentes.
-A Processware possui uma base de código extensa, com diversos repositórios, dependendo das necessidades,
-onde são utilizadas diversas tecnologias, nomeadamente, C, C++, C\#, Vue + Vite, SQL, entre outras,
-sendo estas geridas através do Bitbucket, uma aplicação de source control~\cite{Nguyen2025Comparison}.
-A diversidade tecnológica em conjunto com a atual existência de código legacy (código que irá ser deprecado no futuro),
-exige algumas competências técnicas por parte dos membros da equipa responsável pela revisão de código~\cite{Zhong2024Evaluation}.
+No contexto específico desta dissertação, estes desafios tornam-se evidentes. A Processware mantém uma base de código ampla, distribuída por vários repositórios e com múltiplas tecnologias — como C, C++, C\#, Vue, SQL — coexistindo com código legacy. Esta diversidade aumenta a complexidade da revisão e exige conhecimentos técnicos específicos por parte dos revisores~\cite{zhong2024evaluation}. Além disso, diferentes equipas podem aplicar práticas distintas, dificultando a uniformização de padrões internos e levando a revisões repetitivas e demoradas~\cite{liang2024automation}.
 
-Adicionalmente, devido à existência de várias equipas diferentes dentro da empresa faz com que algumas sugestões poderão não ser consistentes,
-dificultando a uniformização de práticas internas e padrões. Com isto, o tempo investido pela equipa de Code Review em
-alterações possivelmente específicas bem como revisões repetitivas são bastante custosas para a Processware,
-desviando a atenção de tarefas mais relevantes~\cite{Liang2024}.
-
-Atualmente, a inteligência artificial têm vindo a crescer exponencialmente através de modelos de grande escala (LLMs),
-sendo bastante visível em algumas ferramentas como são os casos do ChatGPT, Gemini, Copilot e DeepSeek
-que demonstram uma elevada capacidade em não só compreender código desenvolvido em diversas línguas de programação
-mas também a gerar sugestões para problemas que lhes sejam apresentados~\cite{Chen2023Survey}\cite{Nguyen2025Comparison}.
-
-Assim sendo, a utilização de modelos LLMs na etapa de revisão de código é um passo importante
-para resolver os principais problemas associados a este processo~\cite{Liang2024}\cite{Zhong2024Evaluation}.
+Com o avanço recente dos Modelos de Linguagem (LLMs), já amplamente demonstrado em ferramentas como ChatGPT, Gemini ou GitHub Copilot, tornou-se evidente que estes modelos têm capacidade para compreender e analisar código-fonte, identificar problemas e sugerir melhorias~\cite{llmsurvey2023,nguyen2025comparison}. Assim, a adoção de LLMs na revisão de código surge como uma oportunidade para reduzir esforço manual, aumentar a consistência e melhorar a eficiência do processo~\cite{rahman2024empirical,zhong2024evaluation}.
 
 \section{Contexto}
 
-Esta dissertação insere-se no contexto das soluções desenvolvidas pela Processware,
-com o sentido de melhorar a etapa de revisão de código presente no ciclo de vida de
-desenvolvimento de software.
+Esta dissertação enquadra-se no conjunto de soluções desenvolvidas pela Processware para melhorar o processo interno de revisão de código.
 
-Atualmente, a Processware não utiliza qualquer tecnologia de Inteligência Artificial
-nos seus processos internos, incluindo na etapa de revisão de código, que continua a ser
-totalmente manual~\cite{Liang2024}. A diversidade tecnológica, o volume de alterações submetidas
-e a coexistência de código moderno e legacy tornam o processo de revisão de código exigente,
-demorado e dependente da experiência individual dos revisores~\cite{Rahman2024LLMReview}\cite{Zhong2024Evaluation}.
+Atualmente, a revisão de código na empresa é totalmente manual e depende fortemente da experiência dos revisores. O elevado volume de alterações, a variedade tecnológica e a coexistência de código moderno com código legacy tornam a revisão uma tarefa exigente e pouco escalável~\cite{rahman2024empirical}. Esta situação resulta em tempos de análise elevados e inconsistências entre equipas, dificultando a padronização de práticas internas~\cite{zhong2024evaluation}.
 
-Assim, este trabalho advém da necessidade de explorar soluções baseadas em inteligência artificial
-que possam apoiar a análise de código e contribuir para um processo de revisão mais eficiente,
-consistente e alinhado com as exigências atuais relativamente a desenvolvimento de software~\cite{Tufano2024}\cite{Nguyen2025Comparison}.
+Dado este cenário, torna-se pertinente explorar soluções baseadas em inteligência artificial, capazes de apoiar a análise de código e contribuir para um processo de revisão mais eficiente, coerente e alinhado com as necessidades atuais de desenvolvimento de software. Estudos recentes mostram que LLMs podem atuar como revisores assistentes, melhorar a qualidade dos comentários, aumentar a uniformidade e acelerar a deteção de problemas~\cite{tufano2024slr,autoreviewer2025fieldstudy}.
 
 \section{Definição do Problema}\label{sec:definicao_do_problema}
 
