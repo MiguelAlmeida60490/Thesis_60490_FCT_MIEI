@@ -18,11 +18,11 @@
 
 Clique nas imagens para abrir o PDF completo.
 
-[![Página 1](./github_aux_images/page1.png)](./template.pdf)
-[![Página 2](./github_aux_images/page2.png)](./template.pdf)
-[![Página 12](./github_aux_images/page12.png)](./template.pdf)
-[![Página 13](./github_aux_images/page13.png)](./template.pdf)
-[![Página 14](./github_aux_images/page14.png)](./template.pdf)
-[![Página 15](./github_aux_images/page15.png)](./template.pdf)
+[![Página 1](./github_aux_images/page-01.png)](./template.pdf)
+[![Página 2](./github_aux_images/page-02.png)](./template.pdf)
+[![Página 12](./github_aux_images/page-12.png)](./template.pdf)
+[![Página 13](./github_aux_images/page-13.png)](./template.pdf)
+[![Página 14](./github_aux_images/page-14.png)](./template.pdf)
+[![Página 15](./github_aux_images/page-15.png)](./template.pdf)
 
 🔗 **[Visualizar / Download PDF Completo](./template.pdf)**
