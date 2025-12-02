@@ -32,12 +32,50 @@ Dado este cenário, torna-se pertinente explorar soluções baseadas em intelig�
 
 \section{Definição do Problema}\label{sec:definicao_do_problema}
 
+O processo de revisão de código na Processware é atualmente manual, exigindo que os revisores analisem cada alteração submetida nos diferentes repositórios e tecnologias utilizadas pela empresa. Consequentemente, esta abordagem apresenta várias limitações. Numa primeira instância, a revisão é uma tarefa demorada e dependente das competências técnicas dos revisores, o que pode levar ao aumento da probabilidade de ocorrerem erros e inconsistências~\cite{liang2024automation}. A coexistência de múltiplas tecnologias e de código legacy tambem dificultam na identificação de problemas numa forma sistemática~\cite{tufano2024slr}.
 
+Além disso, revisores poderão adotar critérios distintos, dependendo do \textit{pull request} em questão, resultando em comentários heterogéneos e dificultando a uniformização de práticas internas. Estudos recentes mostram que esta falta de consistência é um problema comum em ambientes empresariais e afeta tanto a qualidade das revisões de código como a eficiência deste processo~\cite{zhong2024evaluation}. Outro problema recorrente é a necessidade de realizar comentários repetitivos, como correções de estilo, validações simples ou alertas sobre riscos conhecidos, que consomem tempo e poderiam ser automatizados~\cite{liang2024automation}.
+
+Com os avanços recentes em modelos de linguagem de grande escala (LLMs), surgiu a oportunidade de automatizar grande parte deste processo. Estes modelos têm demonstrado capacidade para analisar código, identificar problemas e gerar comentários úteis~\cite{airesults2024review}. No entanto, existem registos que apontam limitações: a utilidade dos comentários varia significativamente, alguns modelos tendem a gerar falsos positivos e a eficácia depende da clareza e pertinência das recomendações produzidas~\cite{rahman2024empirical}\cite{autoreviewer2025fieldstudy}. Importa ainda referir que LLMs genéricos não compreendem as práticas e padrões internos de cada organização, reduzindo a sua aplicabilidade prática durante o processo de revisão de código.
+
+Assim, o problema central que esta dissertação procura resolver consiste na ausência de um sistema capaz de apoiar a revisão de código na Processware, produzindo comentários automáticos, alinhados com as boas práticas internas, reduzindo esforço repetitivo e contribuindo para um processo mais consistente, eficiente e escalável. Este desafio está alinhado com a necessidade de adaptar LLMs a contextos organizacionais específicos, de forma a tirar partido do seu potencial no processo de revisão de código~\cite{google2024autocommenter}\cite{llmsurvey2023}.
 
 \section{Objetivos}\label{sec:objetivos}
 
+O principal objetivo desta dissertação é desenvolver um sistema capaz de apoiar o processo de revisão de código na Processware, fornecendo comentários automáticos consistentes com as boas práticas internas e ajudando a reduzir o esforço associado a tarefas repetitivas. Pretende-se criar uma solução que aumente a eficiência, a uniformidade e a qualidade das revisões de código realizadas na empresa.
 
+Para atingir este propósito, foram definidos os seguintes objetivos:
+
+\begin{enumerate}
+    \item \textbf{Identificação e formalização de boas práticas internas:} analisar o código existente e recolher conhecimento junto da equipa responsável pelo processo de \textit{Code Review} para mapear os padrões, convenções e recomendações atualmente aplicados neste processo.
+    \item \textbf{Análise inteligente de alterações de código:} desenvolver um sistema capaz de interpretar \textit{diffs} e compreender o contexto das alterações submetidas, tendo em conta as várias tecnologias utilizadas na Processware.
+
+    \item \textbf{Geração de comentários consistentes e acionáveis:} criar um mecanismo que produza comentários claros, concisos e alinhados com as boas práticas internas, ajudando os revisores a detetar problemas recorrentes e a manter a consistência entre \textit{pull requests}.
+
+    \item \textbf{Integração fluida no fluxo de desenvolvimento:} garantir que a solução pode ser incorporada no processo atual de revisão de código, permitindo que os comentários sejam disponibilizados durante a análise de \textit{pull requests}.
+
+    \item \textbf{Avaliação da eficácia e utilidade prática:} validar o sistema através de métricas objetivas e subjetivas, garantindo que a solução contribui para revisões mais eficientes e uniformes.
+\end{enumerate}
+
+Este conjunto de objetivos visa assegurar que o sistema desenvolvido traz valor real ao processo de revisão de código da Processware, promovendo maior qualidade, consistência e produtividade no desenvolvimento de software.
 
 \section{Solução Proposta}\label{sec:solucao_proposta}
 
+A solução proposta consiste no desenvolvimento de um sistema de apoio à revisão de código baseado em modelos de linguagem, capaz de analisar automaticamente alterações submetidas nas \textit{pull requests} e gerar comentários alinhados com as boas práticas internas da Processware. O sistema pretende atuar como um assistente de revisão, reduzindo tarefas repetitivas, promovendo maior consistência entre equipas e aumentando a eficiência do processo.
 
+A proposta assenta nos seguintes componentes principais:
+
+\begin{enumerate}
+    \item \textbf{Extração e pré-processamento das alterações de código:} o sistema recebe o \textit{diff} da \textit{pull request} e transforma-o numa representação adequada para análise, garantindo que apenas as alterações relevantes são processadas.
+    \item \textbf{Interpretação das mudanças com suporte de LLMs:} um modelo de linguagem é utilizado para compreender o contexto das alterações, identificar possíveis problemas e reconhecer padrões que violam boas práticas previamente definidas.
+
+    \item \textbf{Geração de comentários automáticos:} com base na análise realizada, o sistema produz comentários claros, concisos e acionáveis, seguindo as recomendações internas da Processware e facilitando o trabalho dos revisores humanos.
+
+    \item \textbf{Módulo de personalização de boas práticas:} permite adaptar regras e orientações às necessidades da empresa, garantindo que os comentários automáticos refletem padrões internos e preferências específicas de diferentes equipas.
+
+    \item \textbf{Integração com o fluxo de desenvolvimento existente:} o sistema é incorporado diretamente no processo atual da Processware, permitindo que os comentários sejam adicionados nas \textit{pull requests} através das ferramentas já utilizadas pela equipa.
+
+    \item \textbf{Monitorização e melhoria contínua:} a solução recolhe métricas e feedback dos utilizadores para identificar oportunidades de melhoria, ajustando o comportamento do sistema de forma progressiva ao longo do tempo.
+\end{enumerate}
+
+Em conjunto, estes componentes constituem uma solução prática e extensível, preparada para apoiar revisores humanos e tornar o processo de revisão de código mais eficiente, consistente e alinhado com as necessidades reais da empresa.
