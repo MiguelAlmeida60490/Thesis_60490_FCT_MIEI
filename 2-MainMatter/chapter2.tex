@@ -10,10 +10,18 @@
 
 \chapter{Conceitos}\label{cha:conceitos}
 
+Este capítulo tem como objetivo apresentar os principais conceitos teóricos e técnicos que sustentam o desenvolvimento desta dissertação. São abordados os fundamentos relacionados com o processo de \textit{code review} no contexto do desenvolvimento de \textit{software}, bem como a evolução das abordagens de automação aplicadas a este processo.
 
-% Introdução ao capitulo
+\section{\textit{Code Review} no Desenvolvimento de \textit{Software}}
 
-\section{Revisão de Código no Desenvolvimento de \textit{Software}}
+A Revisão de Código (\textit{Code Review}) é uma prática fundamental no desenvolvimento de software que consiste na análise sistemática do código-fonte por um ou mais programadores, com o objetivo de identificar defeitos, melhorar a qualidade do código e garantir a conformidade com boas práticas e padrões definidos pela organização~\cite{bacchelli2013expectations,rigby2013convergent}. Esta atividade é normalmente realizada antes da integração das alterações no ramo principal do projeto, assumindo um papel central nos fluxos de desenvolvimento modernos baseados em \textit{pull requests}.
+
+Historicamente, a revisão de código surgiu como uma prática formal, associada a inspeções estruturadas, como as inspeções de Fagan, que demonstraram benefícios significativos na deteção precoce de erros e na redução de custos associados à correção de defeitos em fases avançadas do desenvolvimento~\cite{fagan1976design}. Com a evolução das metodologias ágeis e das plataformas colaborativas de desenvolvimento, a revisão de código tornou-se um processo mais leve e contínuo, integrado no ciclo diário de desenvolvimento de software~\cite{rigby2014peer}.
+
+Os principais objetivos da revisão de código incluem a deteção de erros lógicos e defeitos funcionais, a melhoria da legibilidade e manutenibilidade do código, a verificação da conformidade com padrões de estilo e boas práticas, bem como a mitigação de riscos relacionados com segurança e desempenho~\cite{mcintosh2014empirical}. Para além dos aspetos técnicos, a revisão de código desempenha também um papel relevante na partilha de conhecimento entre membros da equipa, promovendo a disseminação de boas práticas e contribuindo para a uniformização do código ao longo do projeto~\cite{bacchelli2013expectations}.
+
+Apesar dos seus benefícios comprovados, a revisão de código é uma atividade exigente do ponto de vista cognitivo e temporal, dependendo fortemente da experiência e disponibilidade dos revisores. Em projetos de grande escala, caracterizados por elevados volumes de alterações e diversidade tecnológica, este processo pode tornar-se difícil de escalar, originando atrasos, inconsistências e variabilidade na qualidade das revisões realizadas~\cite{rahman2016review}.
+
 
 \section{Automação da Revisão de Código}
 
@@ -21,7 +29,6 @@
 
 \section{Modelos de Linguagem de Grande Escala (LLMs)}
 
-\section{LLMs aplicados à Revisão de Código}
+\section{\gls{LLMs} aplicados à Revisão de Código}
 
 \section{Limitações atuais e Desafios}
-
