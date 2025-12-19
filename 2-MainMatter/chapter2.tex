@@ -50,6 +50,43 @@ Estas limitações criaram as condições para a adoção de modelos de linguage
 
 \section{Modelos de Linguagem de Grande Escala (\texorpdfstring{\gls{LLMs}}{LLMs})}
 
+Os Modelos de Linguagem de Grande Escala (\texorpdfstring{\gls{LLMs}}{LLMs}) representam a evolução mais recente no campo da aprendizagem profunda aplicada à linguagem. São modelos baseados na arquitetura \textit{Transformer}, treinados com grandes quantidades de dados textuais e, no contexto relevante para esta dissertação, também em código-fonte, que adquiriram capacidades generativas e de compreensão contextual notáveis~\cite{vaswani2017attention, llmsurvey2023}.
+
+Ao contrário dos modelos anteriores de \textit{deep learning} em que é necessário algum tipo de calibração ou ajustes específicos para cada tarefa, os (\texorpdfstring{\gls{LLMs}}{LLMs}) modernos não necessitam de tanta informação ou exemplos para conseguir devovler uma resposta. Isto significa que podem realizar novas tarefas com base apenas em instruções de linguagem natural, sem necessidade de treino adicional extensivo~\cite{brown2020gpt3}. Esta característica é fundamental para a sua aplicação prática em ambientes empresariais, onde a diversidade de tarefas e a necessidade de rápida adaptação são elevadas.
+
+Dois aspetos tornam os (\texorpdfstring{\gls{LLMs}}{LLMs}) particularmente adequados para a análise de código:
+\begin{enumerate}
+    \item \textbf{Treino Multimodal (Texto e Código):} Modelos como o Codex (base do GitHub Copilot), o GPT-4, ou modelos \textit{open-source} como o CodeLLaMA, foram treinados em vastos \textit{corpora} que incluem tanto linguagem natural como código-fonte de múltiplas linguagens de programação. Isto permitiu-lhes aprender não só a sintaxe, mas também padrões semânticos, \textit{idioms} comuns e até associações entre comentários (especificações em linguagem natural) e a sua implementação~\cite{llmsurvey2023, tufano2024slr}.
+    \item \textbf{Compreensão de Contexto de Longo Alcance:} A arquitetura \textit{Transformer}, através do seu mecanismo de \textit{attention}, permite que o modelo pondere relações entre \textit{tokens} distantes no texto de entrada. Isto é crucial para compreender um \textit{diff} de código, onde uma alteração numa linha pode ter implicações em funções ou módulos referenciados noutras partes do ficheiro~\cite{vaswani2017attention}.
+\end{enumerate}
+
+Estas capacidades transformam os (\texorpdfstring{\gls{LLMs}}{LLMs}) de meros geradores de texto em ferramentas potencialmente capazes de atuar como \textit{assistentes de programação inteligentes}, compreendendo a intenção por trás de alterações de código e avaliando-as num contexto mais amplo do que as ferramentas de análise estática baseadas em regras.
+
 \section{\texorpdfstring{\gls{LLMs}}{LLMs} aplicados à Revisão de Código}
 
-\section{Limitações atuais e Desafios}
+A aplicação de (\texorpdfstring{\gls{LLMs}}{LLMs}) à automação da revisão de código é uma área de investigação e desenvolvimento industrial em rápido crescimento. Estes modelos são utilizados para automatizar ou auxiliar várias sub-tarefas do processo de \textit{code review}:
+
+\begin{itemize}
+    \item \textbf{Geração de Descrições e Sumários:} Automatizar a criação de descrições concisas para \textit{pull requests}, resumindo as alterações realizadas, o que ajuda os revisores a compreender rapidamente o contexto~\cite{codeagent2024}.
+    \item \textbf{Deteção de Defeitos e \textit{Code Smells}:} Identificar potenciais \textit{bugs}, vulnerabilidades de segurança, más práticas de desempenho ou violações de princípios de design (como SOLID) com base no contexto aprendido, superando em alguns casos a precisão de analisadores estáticos tradicionais para certos tipos de problemas~\cite{liang2024automation, rahman2024empirical}.
+    \item \textbf{Geração de Comentários de Revisão:} Esta é a aplicação mais diretamente relacionada com o objetivo desta dissertação. Os (\texorpdfstring{\gls{LLMs}}{LLMs}) analisam o \textit{diff} e geram comentários que podem variar desde sugestões de estilo (formatação, nomenclatura) até a questões de lógica, sugerindo implementações alternativas ou apontando casos extremos não tratados~\cite{airesults2024review, google2024autocommenter}.
+    \item \textbf{Resposta a Comentários:} Alguns sistemas exploram a capacidade dos (\texorpdfstring{\gls{LLMs}}{LLMs}) de atuar como autores, respondendo automaticamente a comentários dos revisores, esclarecendo decisões ou comprometendo-se com correções~\cite{codeagent2024}.
+\end{itemize}
+
+\textbf{Estudos e Resultados Chave:} Trabalhos recentes demonstram o potencial desta abordagem. Por exemplo, estudos que utilizam modelos como o GPT-3.5/4 ou o CodeLLaMA mostraram que os comentários gerados podem ser considerados úteis por programadores numa percentagem significativa dos casos, por vezes equivalentes a comentários de revisores humanos para categorias específicas de problemas~\cite{liang2024automation, rahman2024empirical}. No entanto, a literatura também aponta desafios consistentes: a utilidade é altamente variável, há uma tendência para gerar falsos positivos ou sugestões genéricas, e os modelos podem ``alucinar'', sugerindo problemas inexistentes ou correções incorretas~\cite{liang2024automation, zhong2024evaluation}.
+
+A eficácia destes sistemas depende criticamente da formulação do \textit{prompt} (a instrução dada ao modelo), do contexto fornecido (o \textit{diff}, mas também potencialmente ficheiros relevantes, descrição do \textit{PR}, etc.) e da existência de um mecanismo para guiar o modelo com o conhecimento específico da organização -- uma lacuna que esta dissertação pretende colmatar.
+
+\section{Limitações atuais e Desafios (não sei se isto fica bem neste capitulo)}
+
+Apesar do potencial demonstrado, a integração prática de (\texorpdfstring{\gls{LLMs}}{LLMs}) no processo de revisão de código em ambientes empresariais específicos, como o da Processware, enfrenta vários desafios significativos:
+
+\begin{enumerate}
+    \item \textbf{Falta de Contexto Organizacional Específico:} (\texorpdfstring{\gls{LLMs}}{LLMs}) genéricos são treinados em código público e conhecimentos gerais. Não possuem conhecimento inerente sobre as \textbf{boas práticas internas}, convenções de \textit{codebase}, padrões de arquitetura específicos ou regras de negócio de uma empresa. Um comentário genericamente correto pode ser irrelevante ou mesmo contrário aos padrões internos da organização~\cite{google2024autocommenter, tufano2024slr}.
+    \item \textbf{Variabilidade e Inconsistência na Qualidade:} A utilidade dos comentários gerados pode flutuar amplamente. O modelo pode produzir uma análise perspicaz num caso e, no seguinte, gerar comentários vagos, incorretos ou focados em aspetos triviais, minando a confiança dos programadores~\cite{liang2024automation, rahman2024empirical}.
+    \item \textbf{Alucinações e Falsos Positivos:} (\texorpdfstring{\gls{LLMs}}{LLMs}) podem identificar ``problemas'' que não existem, sugerir correções sintaticamente inválidas ou semanticamente erradas, ou atribuir incorretamente a causa de um defeito. Esta falta de fiabilidade exige uma supervisão humana cuidadosa, podendo anular os ganhos de eficiência~\cite{zhong2024evaluation, nguyen2025comparison}.
+    \item \textbf{Custo e Latência:} A execução de (\texorpdfstring{\gls{LLMs}}{LLMs}) de grande porte para analisar cada \textit{pull request} pode ter custos computacionais e financeiros não triviais, além de introduzir latência no processo, especialmente para \textit{diffs} grandes ou análises complexas.
+    \item \textbf{Integração no Fluxo de Trabalho (\textit{Workflow}):} Incorporar uma ferramenta baseada em LLM de forma não intrusiva e que realmente agregue valor -- em vez de gerar ruído -- é um desafio de engenharia. A ferramenta deve complementar, e não substituir ou atrapalhar, o julgamento humano e a dinâmica colaborativa da revisão~\cite{autoreviewer2025fieldstudy}.
+\end{enumerate}
+
+Este conjunto de limitações define claramente o espaço para a contribuição proposta nesta dissertação. O problema central não é \textit{se} os (\texorpdfstring{\gls{LLMs}}{LLMs}) podem gerar comentários, mas \textbf{como fazê-lo de forma consistente, alinhada com o contexto específico da Processware, e suficientemente fiável para ser integrada no fluxo de desenvolvimento da empresa}. A solução proposta, ao focar-se na personalização com base nas boas práticas internas e na integração fluida, aborda diretamente as lacunas 1 e 5, enquanto os objetivos de avaliação (Objetivo 5) visam mitigar os riscos apontados nas lacunas 2, 3 e 4.
