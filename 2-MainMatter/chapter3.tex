@@ -11,15 +11,39 @@
 
 \chapter{Tecnologias}\label{cha:tecnologias}
 
+Este capítulo tem como objetivo apresentar as principais tecnologias relevantes para o desenvolvimento da solução proposta nesta dissertação. São abordadas as plataformas de controlo de versões e revisão de código, as ferramentas de revisão automática existentes e as abordagens baseadas em modelos de linguagem de grande escala, bem como as tecnologias utilizadas para a extração, processamento e integração de alterações de código em sistemas reais.
+
 \section{Plataformas de Controlo de Versões e Revisão de Código}
 
-\section{\textit{Software} de Revisão Automática}
+As plataformas de controlo de versões desempenham um papel central no desenvolvimento moderno de software, fornecendo mecanismos para gerir alterações de código, promover a colaboração entre programadores e suportar processos de revisão antes da integração de novas funcionalidades no produto em desenvolvimento. Atualmente, o sistema de controlo de versões distribuído \textit{Git} é amplamente adotado na indústria e serve de base às principais plataformas de desenvolvimento colaborativo.
+
+Com base no \textit{Git}, têm vindo a surgir plataformas que integram funcionalidades adicionais orientadas para a colaboração e revisão de código, como é o caso do \textit{GitHub}, do \textit{GitLab} e do \textit{Bitbucket}. Estas plataformas introduziram o conceito de \textit{pull request} (ou \textit{merge request}), que permite submeter um conjunto de alterações para análise, discussão e validação antes da integração das alterações no ramo principal do repositório. Este modelo tornou-se um elemento central dos fluxos de desenvolvimento contemporâneos, particularmente em equipas distribuídas e ambientes empresariais de grande escala.
+
+O processo de revisão de código nestas plataformas é suportado por um conjunto de funcionalidades específicas, incluindo comentários \textit{inline} associados a linhas ou blocos de código, mecanismos de aprovação ou rejeição de alterações e integração com sistemas automáticos de validação, como testes e analisadores estáticos. Estas capacidades permitem que os revisores forneçam feedback contextualizado e registem decisões de forma estruturada, promovendo a qualidade e rastreabilidade do processo de desenvolvimento.
+
+Para além da interface de utilizador, estas plataformas disponibilizam interfaces de programação (\textit{APIs}) e mecanismos de notificação, como \textit{webhooks}, que permitem a integração de ferramentas externas no fluxo de revisão de código. Através destas interfaces, é possível aceder programaticamente às alterações submetidas, obter o \textit{diff} associado a um \textit{pull request} e adicionar comentários de forma automática. Estas características tornam as plataformas de controlo de versões pontos naturais de integração para sistemas de apoio à revisão de código baseados em inteligência artificial.
+
+Neste contexto, a escolha de uma plataforma de controlo de versões não influencia apenas a gestão do código-fonte, mas também condiciona as possibilidades de automação e integração de soluções inteligentes no processo de \textit{code review}. Assim, compreender as capacidades oferecidas por estas plataformas é essencial para o desenvolvimento de sistemas que visem apoiar ou automatizar a revisão de código de forma eficaz e alinhada com os fluxos de trabalho existentes.
+
+\section{Ferramentas de Revisão Automática Tradicionais}
+
+Com o aumento da complexidade dos sistemas de software e do volume de alterações submetidas para revisão, surgiram ferramentas de apoio automático ao processo de revisão de código, com o objetivo de reduzir o esforço manual e melhorar a deteção precoce de problemas. Estas ferramentas baseiam-se, maioritariamente, em técnicas de análise estática de código, analisando o código-fonte sem necessidade de execução e recorrendo a um conjunto de regras ou heurísticas pré-definidas.
+
+Entre as ferramentas mais utilizadas encontram-se os \textit{linters} e analisadores estáticos, como o SonarQube, o ESLint, o PMD ou o Checkstyle, que são capazes de identificar violações de estilo, más práticas recorrentes, potenciais erros de execução e problemas de manutenibilidade. Estas ferramentas são frequentemente integradas em pipelines de integração contínua, permitindo que os problemas detetados sejam sinalizados automaticamente durante o processo de desenvolvimento.
+
+Uma das principais vantagens destas abordagens reside no seu comportamento determinístico e na capacidade de fornecer feedback rápido e consistente. As regras utilizadas são bem definidas, o que facilita a compreensão dos avisos gerados e a sua repetibilidade ao longo do tempo. Além disso, a integração destas ferramentas nos fluxos de desenvolvimento é, em geral, simples e bem suportada pelas plataformas de controlo de versões e integração contínua.
+
+No entanto, as ferramentas de revisão automática tradicionais apresentam limitações relevantes, especialmente em ambientes empresariais complexos. A utilização de regras fixas dificulta a adaptação a contextos organizacionais específicos, como convenções internas, decisões arquiteturais particulares ou requisitos de negócio. Como consequência, estas ferramentas tendem a gerar um número elevado de avisos genéricos ou irrelevantes, o que pode levar à sua desvalorização por parte dos programadores.
+
+Outra limitação significativa prende-se com a compreensão reduzida do contexto em que o código é desenvolvido. As ferramentas de análise estática não conseguem, em geral, captar a intenção do programador, avaliar decisões de design ou interpretar o impacto de uma alteração no contexto mais amplo do sistema. Assim, embora sejam eficazes na deteção de problemas bem definidos e repetitivos, revelam-se menos adequadas para fornecer comentários contextualizados e acionáveis durante o processo de revisão de código.
+
+Estas limitações motivaram a exploração de abordagens mais flexíveis e contextuais, capazes de compreender o código de forma mais abrangente e de gerar feedback alinhado com o contexto específico de cada projeto. As ferramentas baseadas em modelos de linguagem de grande escala, discutidas na secção seguinte, surgem como uma resposta a estas necessidades, procurando complementar as abordagens tradicionais de revisão automática.
 
 \section{Ferramentas baseadas em LLMs para \textit{Code Review}}
 
-\section{Tecnologias para Extração e Processamento de Dados}
+\section{Tecnologias para Extração e Processamento de Alterações de Código}
 
 \section{Tecnologias para integração de LLMs}
 
-\section{Conclusão}
+\section{Síntese e Considerações Finais}
 
