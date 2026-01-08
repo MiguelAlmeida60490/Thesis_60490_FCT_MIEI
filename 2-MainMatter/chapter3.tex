@@ -2,48 +2,80 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% chapter3.tex
 %% NOVA thesis document file
-%%
-%% Chapter with a short latex tutorial and examples
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \typeout{NT FILE chapter3.tex}%
 
-
 \chapter{Tecnologias}\label{cha:tecnologias}
 
-Este capítulo tem como objetivo apresentar as principais tecnologias relevantes para o desenvolvimento da solução proposta nesta dissertação. São abordadas as plataformas de controlo de versões e revisão de código, as ferramentas de revisão automática existentes e as abordagens baseadas em modelos de linguagem de grande escala, bem como as tecnologias utilizadas para a extração, processamento e integração de alterações de código em sistemas reais.
+Este capítulo tem como objetivo apresentar as principais tecnologias relevantes para o desenvolvimento da solução proposta nesta dissertação. São abordadas as plataformas de controlo de versões e revisão de código, as ferramentas de revisão automática existentes e as abordagens baseadas em \glspl{LLM}, bem como as tecnologias utilizadas para a extração, processamento e integração de alterações de código em sistemas reais.
 
 \section{Plataformas de Controlo de Versões e Revisão de Código}
 
-As plataformas de controlo de versões desempenham um papel central no desenvolvimento moderno de software, fornecendo mecanismos para gerir alterações de código, promover a colaboração entre programadores e suportar processos de revisão antes da integração de novas funcionalidades no produto em desenvolvimento. Atualmente, o sistema de controlo de versões distribuído \textit{Git} é amplamente adotado na indústria e serve de base às principais plataformas de desenvolvimento colaborativo.
+As plataformas de controlo de versões desempenham um papel central no desenvolvimento moderno de software, fornecendo mecanismos para gerir alterações de código, promover a colaboração entre programadores e suportar processos de revisão antes da integração de novas funcionalidades no produto em desenvolvimento. Atualmente, o sistema de controlo de versões distribuído \textit{Git} é amplamente adotado na indústria e serve de base às principais plataformas de desenvolvimento colaborativo, suportando os fluxos de \gls{CR} característicos do desenvolvimento moderno~\cite{rigby2013convergent, bacchelli2013expectations}.
 
-Com base no \textit{Git}, têm vindo a surgir plataformas que integram funcionalidades adicionais orientadas para a colaboração e revisão de código, como é o caso do \textit{GitHub}, do \textit{GitLab} e do \textit{Bitbucket}. Estas plataformas introduziram o conceito de \textit{pull request} (ou \textit{merge request}), que permite submeter um conjunto de alterações para análise, discussão e validação antes da integração das alterações no ramo principal do repositório. Este modelo tornou-se um elemento central dos fluxos de desenvolvimento contemporâneos, particularmente em equipas distribuídas e ambientes empresariais de grande escala.
+Com base no \textit{Git}, têm vindo a surgir plataformas que integram funcionalidades adicionais orientadas para a colaboração e revisão de código, como é o caso do \textit{GitHub}, do \textit{GitLab} e do \textit{Bitbucket}. Estas plataformas introduziram o conceito de \glspl{PR} (ou \textit{merge request}), que permite submeter um conjunto de alterações para análise, discussão e validação antes da integração das alterações no ramo principal do repositório. Este modelo tornou-se um elemento central dos fluxos de desenvolvimento contemporâneos, particularmente em equipas distribuídas e ambientes empresariais de grande escala, estando associado a melhorias na qualidade do código e na deteção precoce de defeitos~\cite{mcintosh2014empirical}.
 
-O processo de revisão de código nestas plataformas é suportado por um conjunto de funcionalidades específicas, incluindo comentários \textit{inline} associados a linhas ou blocos de código, mecanismos de aprovação ou rejeição de alterações e integração com sistemas automáticos de validação, como testes e analisadores estáticos. Estas capacidades permitem que os revisores forneçam feedback contextualizado e registem decisões de forma estruturada, promovendo a qualidade e rastreabilidade do processo de desenvolvimento.
+O processo de \gls{CR} nestas plataformas é suportado por um conjunto de funcionalidades específicas, incluindo comentários \textit{inline} associados a linhas ou blocos de código, mecanismos de aprovação ou rejeição de alterações e integração com sistemas automáticos de validação, como testes e analisadores estáticos. Estas capacidades permitem que os revisores forneçam feedback contextualizado e registem decisões de forma estruturada, promovendo a qualidade e rastreabilidade do processo de desenvolvimento.
 
-Para além da interface de utilizador, estas plataformas disponibilizam interfaces de programação (\textit{APIs}) e mecanismos de notificação, como \textit{webhooks}, que permitem a integração de ferramentas externas no fluxo de revisão de código. Através destas interfaces, é possível aceder programaticamente às alterações submetidas, obter o \textit{diff} associado a um \textit{pull request} e adicionar comentários de forma automática. Estas características tornam as plataformas de controlo de versões pontos naturais de integração para sistemas de apoio à revisão de código baseados em inteligência artificial.
+Para além da interface de utilizador, estas plataformas disponibilizam interfaces de programação (\gls{API}) e mecanismos de notificação, como \textit{webhooks}, que permitem a integração de ferramentas externas no fluxo de \gls{CR}. Através destas interfaces, é possível aceder programaticamente às alterações submetidas, obter o \gls{Diff} associado a um \gls{PR} e adicionar comentários de forma automática. Estas características tornam as plataformas de controlo de versões pontos naturais de integração para sistemas de apoio à \gls{CR} baseados em inteligência artificial.
 
-Neste contexto, a escolha de uma plataforma de controlo de versões não influencia apenas a gestão do código-fonte, mas também condiciona as possibilidades de automação e integração de soluções inteligentes no processo de \textit{code review}. Assim, compreender as capacidades oferecidas por estas plataformas é essencial para o desenvolvimento de sistemas que visem apoiar ou automatizar a revisão de código de forma eficaz e alinhada com os fluxos de trabalho existentes.
+Neste contexto, a escolha de uma plataforma de controlo de versões não influencia apenas a gestão do código-fonte, mas também condiciona as possibilidades de automação e integração de soluções inteligentes no processo de \gls{CR}. Assim, compreender as capacidades oferecidas por estas plataformas é essencial para o desenvolvimento de sistemas que visem apoiar ou automatizar a revisão de código de forma eficaz e alinhada com os fluxos de trabalho existentes.
 
 \section{Ferramentas de Revisão Automática Tradicionais}
 
-Com o aumento da complexidade dos sistemas de software e do volume de alterações submetidas para revisão, surgiram ferramentas de apoio automático ao processo de revisão de código, com o objetivo de reduzir o esforço manual e melhorar a deteção precoce de problemas. Estas ferramentas baseiam-se, maioritariamente, em técnicas de análise estática de código, analisando o código-fonte sem necessidade de execução e recorrendo a um conjunto de regras ou heurísticas pré-definidas.
+Com o aumento da complexidade dos sistemas de software e do volume de alterações submetidas para revisão, surgiram ferramentas de apoio automático ao processo de \gls{CR}, com o objetivo de reduzir o esforço manual e melhorar a deteção precoce de problemas. Estas ferramentas baseiam-se, maioritariamente, em técnicas de análise estática de código, analisando o código-fonte sem necessidade de execução e recorrendo a um conjunto de regras ou heurísticas pré-definidas, com origem em abordagens clássicas de inspeção de software~\cite{fagan1976design}.
 
-Entre as ferramentas mais utilizadas encontram-se os \textit{linters} e analisadores estáticos, como o SonarQube, o ESLint, o PMD ou o Checkstyle, que são capazes de identificar violações de estilo, más práticas recorrentes, potenciais erros de execução e problemas de manutenibilidade. Estas ferramentas são frequentemente integradas em pipelines de integração contínua, permitindo que os problemas detetados sejam sinalizados automaticamente durante o processo de desenvolvimento.
+Entre as ferramentas mais utilizadas encontram-se os \textit{linters} e analisadores estáticos, como o SonarQube, o ESLint, o PMD ou o Checkstyle, que são capazes de identificar violações de estilo, más práticas recorrentes, potenciais erros de execução e problemas de manutenibilidade. Estas ferramentas são frequentemente integradas em pipelines de \gls{CI}, permitindo que os problemas detetados sejam sinalizados automaticamente durante o processo de desenvolvimento.
 
-Uma das principais vantagens destas abordagens reside no seu comportamento determinístico e na capacidade de fornecer feedback rápido e consistente. As regras utilizadas são bem definidas, o que facilita a compreensão dos avisos gerados e a sua repetibilidade ao longo do tempo. Além disso, a integração destas ferramentas nos fluxos de desenvolvimento é, em geral, simples e bem suportada pelas plataformas de controlo de versões e integração contínua.
+Uma das principais vantagens destas abordagens reside no seu comportamento determinístico e na capacidade de fornecer feedback rápido e consistente. As regras utilizadas são bem definidas, o que facilita a compreensão dos avisos gerados e a sua repetibilidade ao longo do tempo. Além disso, a integração destas ferramentas nos fluxos de desenvolvimento é, em geral, simples e bem suportada pelas plataformas de controlo de versões e \gls{CI}.
 
-No entanto, as ferramentas de revisão automática tradicionais apresentam limitações relevantes, especialmente em ambientes empresariais complexos. A utilização de regras fixas dificulta a adaptação a contextos organizacionais específicos, como convenções internas, decisões arquiteturais particulares ou requisitos de negócio. Como consequência, estas ferramentas tendem a gerar um número elevado de avisos genéricos ou irrelevantes, o que pode levar à sua desvalorização por parte dos programadores.
+No entanto, as ferramentas de revisão automática tradicionais apresentam limitações relevantes, especialmente em ambientes empresariais complexos. Estudos empíricos demonstram que a utilização de regras fixas dificulta a adaptação a contextos organizacionais específicos e pode originar um número elevado de avisos irrelevantes, levando frequentemente à sua desvalorização por parte dos programadores~\cite{johnson2013donotuse, kim2016warnings}.
 
-Outra limitação significativa prende-se com a compreensão reduzida do contexto em que o código é desenvolvido. As ferramentas de análise estática não conseguem, em geral, captar a intenção do programador, avaliar decisões de design ou interpretar o impacto de uma alteração no contexto mais amplo do sistema. Assim, embora sejam eficazes na deteção de problemas bem definidos e repetitivos, revelam-se menos adequadas para fornecer comentários contextualizados e acionáveis durante o processo de revisão de código.
+Outra limitação significativa prende-se com a compreensão reduzida do contexto em que o código é desenvolvido. As ferramentas de análise estática não conseguem, em geral, captar a intenção do programador, avaliar decisões de design ou interpretar o impacto de uma alteração no contexto mais amplo do sistema. Assim, embora sejam eficazes na deteção de problemas bem definidos e repetitivos, revelam-se menos adequadas para fornecer comentários contextualizados e acionáveis durante o processo de \gls{CR}.
 
-Estas limitações motivaram a exploração de abordagens mais flexíveis e contextuais, capazes de compreender o código de forma mais abrangente e de gerar feedback alinhado com o contexto específico de cada projeto. As ferramentas baseadas em modelos de linguagem de grande escala, discutidas na secção seguinte, surgem como uma resposta a estas necessidades, procurando complementar as abordagens tradicionais de revisão automática.
+Estas limitações motivaram a exploração de abordagens mais flexíveis e contextuais, capazes de compreender o código de forma mais abrangente e de gerar feedback alinhado com o contexto específico de cada projeto. As ferramentas baseadas em \glspl{LLM}, discutidas na secção seguinte, surgem como uma resposta a estas necessidades.
 
-\section{Ferramentas baseadas em LLMs para \textit{Code Review}}
+\section{Ferramentas baseadas em \glspl{LLM} para Revisão de Código}
+
+\subsection{Enquadramento Geral}
+
+Os \glspl{LLM} baseiam-se em arquiteturas de atenção que permitem capturar dependências complexas em sequências de texto, tendo demonstrado resultados relevantes em múltiplas tarefas de engenharia de software~\cite{vaswani2017attention, brown2020gpt3, llmsurvey2023}. Estes modelos exploram regularidades estatísticas presentes no código-fonte, frequentemente descritas como a sua \textit{naturalidade}, permitindo capturar padrões semânticos e estruturais relevantes~\cite{hindle2012naturalness, allamanis2018survey}.
+
+No contexto de \gls{CR}, a utilização de \glspl{LLM} permite ultrapassar algumas das limitações das abordagens tradicionais baseadas em regras fixas. Estes modelos são capazes de analisar alterações de código de forma mais flexível, considerando o contexto envolvente, a intenção do programador e a estrutura global do código. Como resultado, torna-se possível gerar comentários mais expressivos, próximos do feedback fornecido por revisores humanos, e apoiar tarefas como a deteção de erros lógicos, a identificação de problemas de legibilidade e a sugestão de melhorias de design.
+
+A aplicação de \glspl{LLM} à revisão de código tem sido explorada tanto em ambientes de investigação como em soluções comerciais, refletindo o interesse crescente em integrar estas tecnologias nos fluxos de desenvolvimento existentes~\cite{tufano2024slr}. No entanto, a diversidade de abordagens adotadas evidencia que o domínio se encontra ainda em evolução.
+
+\subsection{Assistentes de \gls{CR} Comerciais}
+
+Nos últimos anos, várias soluções comerciais têm incorporado \glspl{LLM} como forma de apoiar tarefas relacionadas com a revisão de código. Estas ferramentas são, em geral, integradas em plataformas de controlo de versões ou disponibilizadas como serviços externos, sendo capazes de analisar alterações submetidas em \glspl{PR} e gerar comentários automáticos.
+
+Estudos recentes indicam que estas ferramentas podem reduzir o esforço manual dos revisores e melhorar a eficiência do processo de \gls{CR}, embora a qualidade e relevância dos comentários gerados varie significativamente entre soluções~\cite{airesults2024review, rahman2024empirical}. Em contextos industriais, observa-se que a falta de adaptação ao contexto organizacional e às práticas específicas de cada projeto constitui uma limitação relevante~\cite{google2024autocommenter, autoreviewer2025fieldstudy}.
+
+\subsection{Ferramentas Integradas em \glspl{IDE}}
+
+Para além das soluções integradas em plataformas de controlo de versões, os \glspl{LLM} têm sido amplamente explorados em ferramentas integradas em \glspl{IDE}. Estas ferramentas fornecem feedback em tempo real durante o processo de escrita de código, incluindo sugestões de melhoria, explicações de código e deteção de potenciais problemas.
+
+Apesar do impacto positivo na produtividade individual, estas soluções não substituem o processo colaborativo de revisão formal, uma vez que o seu foco se encontra predominantemente no apoio ao programador individual e não nos fluxos estruturados de validação coletiva~\cite{liang2024automation}.
+
+\subsection{Limitações das Soluções Existentes}
+
+Apesar do potencial demonstrado pelas ferramentas baseadas em \glspl{LLM}, estudos empíricos evidenciam limitações relacionadas com a consistência do feedback, a previsibilidade do comportamento dos modelos e a sua integração nos fluxos de desenvolvimento existentes~\cite{rahman2024empirical, autoreviewer2025fieldstudy}. Adicionalmente, questões de privacidade, custos computacionais e controlo do comportamento dos modelos continuam a constituir desafios relevantes em ambientes empresariais.
 
 \section{Tecnologias para Extração e Processamento de Alterações de Código}
 
-\section{Tecnologias para integração de LLMs}
+A análise automática de alterações de código requer o acesso estruturado às modificações submetidas pelos programadores. Este acesso é geralmente realizado através das interfaces disponibilizadas pelas plataformas de controlo de versões, que permitem obter informação detalhada sobre \textit{commits}, ficheiros modificados e diferenças associadas a \glspl{PR}.
+
+As alterações são frequentemente representadas sob a forma de \glspl{Diff}, embora possam ser transformadas em representações sintáticas, como \glspl{AST}, ou híbridas, dependendo dos objetivos da análise. A escolha da representação influencia diretamente a eficácia das técnicas aplicadas, conforme discutido na literatura sobre análise automática de código~\cite{allamanis2018survey, tufano2019deeplearning}.
+
+\section{Tecnologias para Integração de \glspl{LLM}}
+
+A integração de \glspl{LLM} em sistemas de apoio à revisão de código é normalmente realizada através de arquiteturas baseadas em serviços intermediários, responsáveis pela orquestração da extração de dados, processamento das alterações e geração de feedback automático. Estas arquiteturas permitem maior flexibilidade e controlo sobre o comportamento do sistema~\cite{codeagent2024, autoreviewer2025fieldstudy}.
+
+No entanto, esta integração levanta desafios técnicos relacionados com latência, custos computacionais e robustez do sistema, exigindo mecanismos adicionais de controlo e monitorização~\cite{liang2024automation}.
 
 \section{Síntese e Considerações Finais}
 
+Neste capítulo foram apresentadas as principais tecnologias relevantes para o desenvolvimento de sistemas de apoio à revisão de código. Foram analisadas as plataformas de controlo de versões, as ferramentas tradicionais de revisão automática e as abordagens baseadas em \glspl{LLM}.
+
+Adicionalmente, foram discutidas as tecnologias necessárias para a extração, processamento e integração de alterações de código em sistemas reais. Este enquadramento tecnológico permitiu identificar limitações nas soluções existentes e fundamentar as decisões técnicas subjacentes à solução proposta, cuja arquitetura e implementação são apresentadas no capítulo seguinte.
