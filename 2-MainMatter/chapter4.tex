@@ -2,243 +2,167 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% chapter4.tex
 %% NOVA thesis document file
-%%
-%% Chapter with lots of dummy text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \typeout{NT FILE chapter4.tex}%
 
 \chapter{Solução Proposta}\label{cha:solucao_proposta}
 
-Este capítulo apresenta a solução proposta para a integração de inteligência artificial no processo de revisão de código na Processware. É descrita a abordagem adotada, bem como a arquitetura geral do sistema, os seus principais componentes e a forma como a solução se integra no ciclo de vida de desenvolvimento do software existente.
+Este capítulo apresenta a solução proposta para a integração de técnicas de inteligência artificial no processo de revisão de código da Processware. É descrita a abordagem adotada, a arquitetura geral do sistema e os seus principais componentes, bem como a forma como a solução se integra nos processos internos e nas ferramentas já utilizadas pela organização.
 
-O capítulo começa por apresentar uma visão geral da solução, seguida da definição dos requisitos e premissas que orientaram o seu desenho. São depois introduzidos os princípios arquiteturais e as decisões de design que sustentam a proposta, preparando o enquadramento para os capítulos seguintes, onde serão abordados os detalhes de implementação e a avaliação da solução desenvolvida.
+Ao contrário de abordagens reativas baseadas em eventos da plataforma de controlo de versões, a solução proposta assenta num modelo proativo, no qual a análise das alterações de código é desencadeada antes da criação de uma \gls{PR}. Esta decisão permite alinhar a solução com as práticas existentes na Processware e reforçar o papel da inteligência artificial como mecanismo de apoio à qualidade do código desde fases iniciais do desenvolvimento.
 
 \section{Visão Geral}
 
-A solução proposta consiste num sistema de apoio à revisão de código baseado em modelos de linguagem de grande escala, concebido para analisar automaticamente alterações submetidas em \glspl{PR} e gerar comentários de revisão alinhados com as boas práticas internas da Processware. O sistema atua como um assistente ao revisor humano, com o objetivo de reduzir o esforço associado a tarefas repetitivas, aumentar a consistência do feedback e melhorar a eficiência do processo de \gls{CR}.
+A solução proposta consiste numa aplicação externa integrada com o software interno da Processware, o O2P, concebida para apoiar a revisão de código através da análise automática de diferenças entre ramos de desenvolvimento. O sistema permite comparar uma \textit{branch} de trabalho com a respetiva \textit{branch} base, identificando alterações relevantes e gerando comentários de revisão alinhados com as boas práticas internas da organização.
 
-A arquitetura da solução baseia-se num serviço intermediário integrado com a plataforma de controlo de versões utilizada pela empresa, o Bitbucket. O sistema é acionado automaticamente aquando da criação ou atualização de uma \gls{PR}, extraindo as alterações submetidas e aplicando um processo de pré-processamento que filtra e organiza o \gls{Diff} de acordo com as tecnologias envolvidas.
+O sistema é acionado pelo programador no O2P, numa fase anterior à criação do \gls{PR}. Após a solicitação, a aplicação procede à extração e ao pré-processamento das diferenças entre os ramos selecionados, organizando a informação de forma adequada para dar início à análise das alterações feitas pelo programador.
 
-As alterações processadas são analisadas por um motor baseado em \glspl{LLM}, que combina a informação do código alterado com um conjunto formalizado de boas práticas internas. Este mecanismo permite gerar comentários de revisão em linguagem natural, focados em potenciais problemas, desvios a padrões definidos e oportunidades de melhoria. De forma a mitigar limitações associadas à utilização de \glspl{LLM}, como a geração de falsos positivos, os comentários produzidos são sujeitos a uma fase de validação e filtragem antes da sua publicação.
+As alterações processadas são analisadas por um \textit{software} baseado em \glspl{LLM}, que combina o código alterado com conhecimento derivado de boas práticas internas e de revisões anteriores. Este mecanismo permite gerar comentários de revisão em linguagem natural, identificando potenciais problemas, desvios a padrões definidos e oportunidades de melhoria.
 
-Os comentários finais são automaticamente publicados na \gls{PR}, de forma integrada com o fluxo normal de revisão de código. Importa salientar que o sistema não substitui o julgamento humano nem interfere com o processo de aprovação das alterações, funcionando como um mecanismo complementar às ferramentas de análise estática existentes e à experiência dos revisores.
+Os comentários gerados são apresentados ao programador no O2P, permitindo a sua análise e incorporação antes da submissão formal da \gls{PR}. Desta forma, o sistema atua como um mecanismo preventivo de qualidade, complementando as ferramentas de análise estática existentes e preservando o papel central da revisão final realizada pelos respetivos revisores de código.
 
 \section{Requisitos e Condições de Utilização}\label{sec:requisitos_condicoes}
 
-O desenvolvimento da solução proposta tem por base um conjunto de requisitos funcionais e não funcionais, bem como um conjunto de condições de utilização associadas ao contexto organizacional e tecnológico da Processware. A definição destes elementos é fundamental para garantir que o sistema desenvolvido responde com eficácia ao problema identificado, mantendo a compatibilidade com os fluxos de desenvolvimento já existentes na empresa.
+Estes elementos servem de base ao desenho da arquitetura e asseguram que a solução proposta se integra de forma consistente nos processos internos da organização.
 
 \subsection{Requisitos Funcionais}
 
-Os requisitos funcionais descrevem as capacidades que o sistema deve  com o objetivo de apoiar o processo de \gls{CR}. Foram definidos os seguintes requisitos funcionais:
+Os requisitos funcionais definem as capacidades que o sistema deve oferecer para apoiar o processo de revisão de código:
 
 \begin{itemize}
-    \item \textbf{RF1 -- Deteção automática de eventos de revisão:}  
-    O sistema deve ser capaz de detetar automaticamente a criação ou atualização de \glspl{PR} nos repositórios da Processware, recorrendo aos mecanismos de notificação disponibilizados pela plataforma de controlo de versões.
+    \item \textbf{RF1 -- Seleção de ramos para análise:}  
+    O sistema deve permitir ao utilizador selecionar a \textit{branch} de trabalho e a \textit{branch} base a comparar.
 
-    \item \textbf{RF2 -- Extração de alterações de código:}  
-    O sistema deve obter programaticamente as alterações submetidas numa \gls{PR}, incluindo o \gls{Diff}, a lista de ficheiros modificados e informação contextual relevante, como a linguagem de programação utilizada.
+    \item \textbf{RF2 -- Extração automática de diferenças:}  
+    O sistema deve extrair programaticamente as diferenças entre os ramos selecionados, incluindo o \gls{Diff} e os ficheiros modificados.
 
-    \item \textbf{RF3 -- Análise automática das alterações:}  
-    O sistema deve analisar as alterações de código utilizando \glspl{LLM}, com o objetivo de identificar potenciais problemas, desvios a boas práticas e oportunidades de melhoria.
+    \item \textbf{RF3 -- Pré-processamento das alterações:}  
+    O sistema deve filtrar e organizar as alterações de código de forma a otimizar a análise automática.
 
-    \item \textbf{RF4 -- Integração de boas práticas internas:}  
-    O processo de análise deve ser guiado por um conjunto de boas práticas internas da Processware, garantindo que os comentários gerados estão alinhados com os padrões e convenções adotados pela organização.
+    \item \textbf{RF4 -- Análise baseada em inteligência artificial:}  
+    O sistema deve analisar as alterações utilizando \glspl{LLM} para identificar problemas e oportunidades de melhoria.
 
-    \item \textbf{RF5 -- Geração de comentários de revisão:}  
-    O sistema deve gerar comentários de revisão claros, concisos e acionáveis, em linguagem natural, associados às alterações analisadas.
+    \item \textbf{RF5 -- Integração de boas práticas internas:}  
+    A análise deve ser guiada por um conjunto formalizado de boas práticas da Processware.
 
-    \item \textbf{RF6 -- Publicação automática de comentários:}  
-    Os comentários considerados relevantes devem ser automaticamente publicados na \gls{PR}, de forma integrada com a interface da plataforma de controlo de versões.
+    \item \textbf{RF6 -- Geração de comentários de revisão:}  
+    O sistema deve gerar comentários claros e concisos em linguagem natural.
 
-    \item \textbf{RF7 -- Apoio ao revisor humano:}  
-    O sistema deve atuar como um mecanismo de apoio, não substituindo o julgamento humano nem interferindo com o processo de aprovação final das \glspl{PR}.
+    \item \textbf{RF7 -- Apresentação dos resultados no O2P:}  
+    Os comentários devem ser apresentados ao utilizador no O2P antes da criação da \gls{PR}.
 \end{itemize}
 
 \subsection{Requisitos Não Funcionais}
 
-Para além das funcionalidades descritas, a solução deve respeitar um conjunto de requisitos não funcionais, essenciais para a sua adoção num contexto empresarial. Assim sendo, foram definidos os seguintes requisitos não funcionais:
+A solução deve igualmente cumprir um conjunto de requisitos não funcionais:
 
 \begin{itemize}
-    \item \textbf{RNF1 -- Integração transparente no fluxo de desenvolvimento:}  
-    A solução deve integrar-se de forma não intrusiva no processo existente de revisão de código.
+    \item \textbf{RNF1 -- Integração com sistemas internos:}  
+    A solução deve integrar-se de forma nativa com o O2P.
 
-    \item \textbf{RNF2 -- Escalabilidade:}  
-    O sistema deve ser capaz de lidar com múltiplas \glspl{PR} em paralelo.
+    \item \textbf{RNF2 -- Baixo acoplamento a plataformas externas:}  
+    O sistema não deve depender diretamente de funcionalidades específicas do Bitbucket.
 
-    \item \textbf{RNF3 -- Latência aceitável:}  
-    O tempo de resposta do sistema deve ser compatível com o processo de revisão de código.
+    \item \textbf{RNF3 -- Escalabilidade:}  
+    O sistema deve suportar múltiplas análises em paralelo.
 
-    \item \textbf{RNF4 -- Fiabilidade dos comentários gerados:}  
-    O sistema deve minimizar a geração de comentários irrelevantes ou incorretos.
+    \item \textbf{RNF4 -- Desempenho aceitável:}  
+    O tempo de resposta deve ser compatível com o fluxo de trabalho do programador.
 
-    \item \textbf{RNF5 -- Compatibilidade com ferramentas existentes:}  
-    A solução deve complementar ferramentas de análise estática já utilizadas, como o SonarLint.
-
-    \item \textbf{RNF6 -- Manutenibilidade e extensibilidade:}  
-    A arquitetura do sistema deve permitir a evolução futura da solução.
+    \item \textbf{RNF5 -- Manutenibilidade e extensibilidade:}  
+    A arquitetura deve permitir a evolução futura da solução.
 \end{itemize}
 
 \subsection{Condições de Utilização}
 
-O funcionamento adequado da solução proposta pressupõe um conjunto de condições de utilização que refletem no contexto organizacional e tecnológico em que o sistema irá ser aplicado:
+O funcionamento do sistema pressupõe as seguintes condições:
 
 \begin{itemize}
-    \item \textbf{CU1 -- Existência de um processo formal de revisão de código:}  
-    Assume-se a utilização sistemática de \glspl{PR} como mecanismo de revisão de código, com participação ativa de revisores humanos.
-
-    \item \textbf{CU2 -- Utilização de ferramentas de análise estática:}  
-    Parte-se do princípio de que ferramentas como o SonarLint são utilizadas durante o desenvolvimento, sendo responsáveis pela deteção de problemas sintáticos e violações de regras bem definidas.
-
-    \item \textbf{CU3 -- Supervisão humana dos comentários automáticos:}  
-    Os comentários gerados pelo sistema são sempre sujeitos à avaliação dos revisores humanos, que mantêm a responsabilidade final pela aceitação ou rejeição das alterações propostas.
-
-    \item \textbf{CU4 -- Disponibilidade de boas práticas internas:}  
-    Assume-se que as boas práticas da organização podem ser identificadas, formalizadas e mantidas de forma estruturada, permitindo a sua integração no sistema de análise.
-
-    \item \textbf{CU5 -- Ambiente tecnológico heterogéneo:}  
-    A solução deve operar num contexto caracterizado pela coexistência de múltiplas linguagens de programação e tecnologias, incluindo código moderno e código \textit{legacy}.
+    \item \textbf{CU1 -- Utilização de controlo de versões baseado em ramos;}
+    \item \textbf{CU2 -- Existência de boas práticas internas documentadas;}
+    \item \textbf{CU3 -- Supervisão humana das recomendações;}
+    \item \textbf{CU4 -- Utilização do O2P como ponto central do fluxo de desenvolvimento;}
 \end{itemize}
 
 \section{Arquitetura Geral da Solução}\label{sec:arquitetura_geral}
 
-A solução proposta adota uma arquitetura baseada numa aplicação externa, desenvolvida de forma independente da plataforma de controlo de versões, mas integrada com esta através de interfaces bem definidas. Esta abordagem permite um maior controlo sobre o fluxo de execução, facilita a evolução futura do sistema e reduz o acoplamento a tecnologias específicas.
+A solução proposta adota uma arquitetura baseada numa aplicação externa integrada no ecossistema do O2P. Esta aplicação funciona como um serviço autónomo, responsável pela análise de diferenças entre ramos de código e pela geração de comentários de revisão, não dependendo diretamente de eventos ou mecanismos internos da plataforma de controlo de versões.
 
-A aplicação externa é responsável por orquestrar todo o processo de análise automática das \glspl{PR}, desde a receção dos eventos até à publicação dos comentários de revisão. A integração com o Bitbucket é realizada exclusivamente através de mecanismos standard, como \textit{webhooks} e interfaces de programação (\glspl{API}), garantindo uma comunicação desacoplada e robusta.
-
-Esta decisão arquitetural permite que a solução seja executada como um serviço autónomo no ecossistema tecnológico da Processware, reutilizando componentes existentes, práticas de desenvolvimento consolidadas e mecanismos internos de monitorização e manutenção.
+Esta abordagem permite alinhar a solução com as práticas de desenvolvimento já adotadas pela Processware, privilegiando a separação de responsabilidades, a reutilização de componentes existentes e a integração com sistemas corporativos internos.
 
 \subsection{Visão Geral da Arquitetura}
 
-A arquitetura da solução pode ser conceptualizada como um conjunto de módulos cooperantes, organizados em torno de uma aplicação central de análise. O fluxo de execução inicia-se com a deteção de eventos associados a \glspl{PR}, prossegue com a análise automática das alterações de código e termina com a publicação de comentários de revisão diretamente na plataforma de controlo de versões.
-
-De forma resumida, a arquitetura é composta pelos seguintes elementos principais:
+A arquitetura é composta pelos seguintes elementos principais:
 
 \begin{itemize}
-    \item Plataforma de controlo de versões (Bitbucket);
-    \item Aplicação externa de análise de revisões;
+    \item O2P, enquanto sistema corporativo existente, responsável pela interação com o utilizador e pela orquestração do processo de análise;
+    \item Aplicação externa de análise de código, responsável pela execução da lógica de análise automática e pela coordenação dos componentes de inteligência artificial;
     \item Motor de análise baseado em \glspl{LLM};
-    \item Base de conhecimento de boas práticas internas.
+    \item Base de conhecimento de boas práticas internas;
+    \item Sistema de controlo de versões.
 \end{itemize}
 
-Cada um destes elementos desempenha um papel específico no sistema, sendo descritos em maior detalhe nas subsecções seguintes.
+\subsection{Integração com o O2P}
 
-\subsection{Integração com a Plataforma de Controlo de Versões}
+O O2P atua como ponto de entrada da solução, permitindo ao programador solicitar explicitamente a análise das alterações de código. A interação ocorre através do O2P, que invoca a aplicação externa de análise por meio de interfaces bem definidas.
 
-A integração com o Bitbucket é realizada de forma indireta, através da configuração de \textit{webhooks} que notificam a aplicação externa sempre que uma \gls{PR} é criada ou atualizada. Estes eventos desencadeiam o processo de análise automática, sem necessidade de intervenção manual.
-
-Após a receção do evento, a aplicação externa utiliza as \glspl{API} disponibilizadas pelo Bitbucket para obter informação detalhada sobre a \gls{PR}, incluindo o \gls{Diff}, os ficheiros modificados e metadados relevantes. Da mesma forma, a publicação dos comentários de revisão é efetuada através destas interfaces, assegurando uma integração transparente para os utilizadores finais.
-
-Esta abordagem permite manter a plataforma de controlo de versões desacoplada da lógica de análise, reduzindo dependências e facilitando a manutenção do sistema.
+Desta forma, o utilizador permanece no contexto da ferramenta corporativa já utilizada no seu dia a dia, enquanto a complexidade associada à análise automática baseada em inteligência artificial é abstraída e encapsulada num serviço dedicado.
 
 \subsection{Aplicação Externa de Análise}
 
-A aplicação externa constitui o núcleo da solução proposta, sendo responsável por coordenar todas as etapas do processo de análise. Esta aplicação é desenvolvida com tecnologias já utilizadas pela Processware, assegurando consistência com o ecossistema tecnológico existente e facilitando a sua adoção interna.
+A aplicação externa constitui o núcleo funcional da solução proposta, sendo responsável por extrair as diferenças entre ramos de código a partir do sistema de controlo de versões, executar o pré-processamento das alterações e orquestrar a análise baseada em inteligência artificial.
 
-Entre as principais responsabilidades da aplicação externa destacam-se:
-\begin{itemize}
-    \item Gestão dos eventos recebidos da plataforma de controlo de versões;
-    \item Extração e pré-processamento das alterações de código;
-    \item Orquestração do processo de análise baseado em \glspl{LLM};
-    \item Aplicação de mecanismos de validação e filtragem dos resultados;
-    \item Publicação dos comentários finais nas \glspl{PR}.
-\end{itemize}
-
-A separação destas responsabilidades permite uma maior modularidade e contribui para a manutenibilidade e extensibilidade da solução.
+Após a execução do processo de análise, os resultados são devolvidos ao O2P, que se encarrega da sua apresentação ao programador. Esta abordagem reduz o acoplamento com ferramentas externas específicase e facilita a evolução futura da solução.
 
 \subsection{Motor de Análise e Base de Conhecimento}
 
-O motor de análise é responsável por avaliar as alterações de código submetidas numa \gls{PR}, combinando o conteúdo do \gls{Diff} com um conjunto formalizado de boas práticas internas da Processware. Esta base de conhecimento inclui convenções de codificação, regras arquiteturais e recomendações específicas do contexto organizacional.
+O motor de análise combina as alterações de código com um conjunto de boas práticas internas previamente formalizadas, permitindo a geração de comentários de revisão contextualizados e alinhados com os padrões da organização.
 
-A utilização de \glspl{LLM} permite interpretar as alterações de forma contextual, indo além da deteção de problemas puramente sintáticos. No entanto, reconhecendo as limitações inerentes a estes modelos, os resultados produzidos são sujeitos a mecanismos adicionais de validação, com o objetivo de reduzir a geração de comentários irrelevantes ou incorretos.
+A base de conhecimento é mantida de forma independente do motor de análise, possibilitando a sua atualização contínua sem impacto direto na lógica do sistema. Esta separação facilita a adaptação da solução à evolução das práticas internas da Processware e contribui para a sua manutenção a longo prazo.
 
-Esta combinação entre análise baseada em IA e conhecimento organizacional constitui um dos principais contributos da solução proposta.
 
-\subsection{Considerações Arquiteturais}
 
-A adoção de uma aplicação externa como elemento central da arquitetura permite satisfazer os requisitos definidos na Secção~\ref{sec:requisitos_condicoes}, nomeadamente no que respeita à escalabilidade, manutenibilidade e integração com ferramentas existentes. Adicionalmente, esta abordagem facilita a evolução futura da solução, permitindo a sua adaptação a novas plataformas de controlo de versões ou a diferentes contextos organizacionais sem alterações significativas à arquitetura base.
-
-\section{Fluxo de Execução do Sistema}\label{sec:fluxo_execucao}
-
-Esta secção descreve o fluxo de execução da solução proposta, detalhando as etapas envolvidas desde a criação ou atualização de uma \gls{PR} até à disponibilização dos comentários de revisão gerados automaticamente. A apresentação sequencial do fluxo permite clarificar a interação entre os diferentes componentes da arquitetura e evidenciar o papel de cada um no processo global de análise.
-
-\subsection{Início do Processo}
-
-O fluxo de execução inicia-se quando um programador cria ou atualiza uma \gls{PR} na plataforma de controlo de versões. Este evento é automaticamente comunicado à aplicação externa através de um \textit{webhook} previamente configurado. O \textit{webhook} contém informação essencial sobre a \gls{PR}, permitindo à aplicação identificar o repositório, o identificador da revisão e o tipo de evento ocorrido.
-
-Após a receção do evento, a aplicação externa valida a sua autenticidade e verifica se a \gls{PR} cumpre os critérios necessários para ser analisada, como o tipo de projeto ou as tecnologias envolvidas. Caso estas condições não sejam satisfeitas, o processo é interrompido.
-
-\subsection{Extração e Pré-processamento das Alterações}
-
-Uma vez validado o evento, a aplicação externa utiliza as \glspl{API} do Bitbucket para obter as alterações de código associadas à \gls{PR}. Esta informação inclui o \gls{Diff} completo, a lista de ficheiros modificados e metadados relevantes.
-
-As alterações obtidas são submetidas a uma fase de pré-processamento, cujo objetivo é preparar o código para análise automática. Nesta fase são aplicadas operações como a filtragem de ficheiros irrelevantes, a normalização do formato do \gls{Diff} e a identificação das linguagens de programação envolvidas. Este passo é particularmente relevante em projetos heterogéneos, onde coexistem múltiplas tecnologias.
-
-\subsection{Análise Baseada em Inteligência Artificial}
-
-Após o pré-processamento, as alterações estruturadas são encaminhadas para o motor de análise baseado em \glspl{LLM}. Nesta etapa, o sistema constrói um contexto de análise que combina o código alterado com um conjunto de boas práticas internas da Processware, previamente formalizadas.
-
-O motor de análise avalia as alterações com base neste contexto, identificando potenciais problemas, desvios a padrões definidos e oportunidades de melhoria. O resultado deste processo consiste num conjunto de comentários de revisão em linguagem natural, associados a locais específicos do código sempre que possível.
-
-\subsection{Validação e Filtragem dos Resultados}
-
-Reconhecendo as limitações inerentes à utilização de \glspl{LLM}, os comentários gerados são submetidos a uma fase adicional de validação e filtragem. Esta etapa tem como objetivo reduzir a ocorrência de falsos positivos, eliminar comentários redundantes e garantir que apenas feedback relevante e acionável é apresentado aos revisores.
-
-Os comentários podem ser classificados de acordo com a sua natureza, por exemplo, problemas funcionais, questões de legibilidade ou sugestões de melhoria, permitindo uma apresentação mais estruturada do feedback final.
-
-\subsection{Publicação dos Comentários}
-
-Após a validação, os comentários finais são publicados automaticamente na \gls{PR} através das \glspl{API} do Bitbucket. Dependendo da natureza do comentário, este pode ser associado diretamente a uma linha específica do código ou apresentado como um comentário geral da revisão.
-
-A publicação dos comentários ocorre de forma transparente para os utilizadores, integrando-se no fluxo normal de revisão de código e permitindo que os revisores humanos avaliem, aceitem ou rejeitem as sugestões apresentadas.
-
-\subsection{Interação com o Revisor Humano}
-
-O fluxo de execução termina com a interação do revisor humano com os comentários gerados pelo sistema. O revisor mantém sempre a responsabilidade final sobre a aceitação das alterações submetidas, podendo utilizar os comentários automáticos como apoio à sua análise.
-
-É importante salientar que o sistema não impõe bloqueios nem decisões automáticas, funcionando como um mecanismo complementar às ferramentas de análise estática e à experiência dos revisores. Esta abordagem garante a adoção gradual da solução e contribui para a manutenção da confiança dos utilizadores no processo de revisão de código.
 
 \section{Desenho Detalhado dos Componentes}\label{sec:desenho_componentes}
 
-Esta secção descreve de forma detalhada os principais componentes da solução proposta, bem como as respetivas responsabilidades e interações. O objetivo é clarificar a decomposição interna do sistema, evidenciando como cada componente contribui para o fluxo de execução apresentado na Secção~\ref{sec:fluxo_execucao}.
+Esta secção descreve de forma detalhada os principais componentes da solução proposta, bem como as respetivas responsabilidades e interações. O objetivo é clarificar a decomposição interna do sistema, evidenciando como cada componente contribui para o fluxo de execução apresentado na Secção.
 
 A solução foi desenhada segundo princípios de modularidade e separação de responsabilidades, permitindo facilitar a manutenção, a evolução futura e a reutilização de componentes em diferentes contextos.
 
-\subsection{Componente de Integração com a Plataforma de Controlo de Versões}
+\subsection{Componente de Integração com o Sistema de Controlo de Versões}
 
-O componente de integração com a plataforma de controlo de versões é responsável por toda a comunicação entre a aplicação externa e o Bitbucket. Este componente gere a receção de eventos provenientes de \textit{webhooks}, assegurando a validação da sua origem e a correta interpretação dos dados recebidos.
+O componente de integração com o sistema de controlo de versões é responsável pela interação entre a aplicação externa de análise e os repositórios de código utilizados pela Processware. Este componente permite obter programaticamente o conteúdo dos ramos a comparar, bem como extrair as diferenças de código relevantes para análise.
 
-Adicionalmente, este componente encapsula o acesso às \glspl{API} do Bitbucket, sendo responsável pela obtenção das alterações associadas às \glspl{PR} e pela publicação dos comentários de revisão gerados pelo sistema. Esta abordagem permite isolar dependências externas, reduzindo o impacto de alterações futuras na plataforma de controlo de versões.
+Ao contrário de abordagens baseadas em eventos ou mecanismos reativos da plataforma de controlo de versões, este componente é acionado explicitamente pela aplicação externa, no contexto de um pedido iniciado a partir do O2P. Esta opção reduz a dependência de funcionalidades específicas da plataforma e permite alinhar o processo de análise com os fluxos internos da Processware.
 
-\subsection{Componente de Gestão de Eventos}
+\subsection{Componente de Gestão do Processo de Análise}
 
-O componente de gestão de eventos atua como ponto de entrada do sistema, sendo responsável por coordenar a execução do fluxo de análise após a receção de um evento válido. Este componente determina se uma \gls{PR} deve ser analisada, com base em critérios previamente definidos, como o tipo de projeto, o estado da revisão ou as tecnologias envolvidas.
+O componente de gestão do processo de análise é responsável por coordenar a execução do fluxo de análise após a receção de um pedido válido proveniente do O2P. Este componente determina se uma análise deve ser executada, com base em critérios previamente definidos, como o tipo de projeto, o estado do código ou as tecnologias envolvidas.
 
-Ao centralizar esta lógica, o sistema garante um controlo consistente sobre quando e como a análise automática é desencadeada, evitando execuções desnecessárias e contribuindo para a eficiência global da solução.
+Ao centralizar esta lógica, o sistema garante um controlo consistente sobre quando e como a análise automática é realizada, evitando execuções desnecessárias e contribuindo para a eficiência global da solução.
 
 \subsection{Componente de Pré-processamento}
 
-O componente de pré-processamento tem como principal função preparar as alterações de código para análise automática. Este componente aplica operações como a filtragem de ficheiros irrelevantes, a normalização do formato do \gls{Diff} e a identificação das linguagens de programação presentes na \gls{PR}.
+O componente de pré-processamento tem como principal função preparar as alterações de código para análise automática. Este componente aplica operações como a filtragem de ficheiros irrelevantes, a normalização do formato das diferenças entre ramos e a identificação das linguagens de programação envolvidas.
 
 Este passo é particularmente relevante em projetos empresariais complexos, onde coexistem múltiplas tecnologias e diferentes estilos de codificação. O pré-processamento contribui para melhorar a qualidade da análise subsequente e para reduzir ruído nos resultados gerados pelo sistema.
 
-\subsection{Componente de Orquestração da Análise}
+\subsection{Componente de Organização da Análise}
 
-O componente de orquestração da análise é responsável por coordenar a interação entre os dados pré-processados, a base de conhecimento de boas práticas internas e o motor de análise baseado em \glspl{LLM}. Este componente constrói o contexto de análise, garantindo que a informação relevante é corretamente estruturada e apresentada ao motor de IA.
+O componente de organização da análise é responsável por coordenar a interação entre os dados pré-processados, a base de conhecimento de boas práticas internas e o motor de análise baseado em \glspl{LLM}. Este componente constrói o contexto de análise, garantindo que a informação relevante é corretamente estruturada e apresentada ao motor de IA.
 
 Para além disso, este componente gere aspetos como a segmentação das alterações em unidades analisáveis, o controlo do volume de informação enviado ao modelo e a consolidação dos resultados obtidos. Esta responsabilidade é essencial para assegurar uma utilização eficiente e controlada dos \glspl{LLM}.
 
-\subsection{Motor de Análise Baseado em \glspl{LLM}}
+\subsection{Motor de Análise Baseado em LLMs}
 
 O motor de análise constitui o núcleo inteligente da solução proposta. Este componente utiliza \glspl{LLM} para interpretar as alterações de código de forma contextual, indo além da análise sintática tradicional. Através da combinação entre o código alterado e as boas práticas internas da Processware, o motor é capaz de gerar comentários de revisão em linguagem natural.
 
-Apesar das capacidades avançadas deste componente, o sistema foi desenhado de forma a não depender exclusivamente dos resultados produzidos pelo modelo, reconhecendo as limitações associadas à utilização de IA generativa em contextos críticos.
+Apesar das capacidades avançadas deste componente, o sistema irá ser desenhado de forma a não depender exclusivamente dos resultados produzidos pelo modelo, reconhecendo as limitações associadas à utilização de IA generativa em contextos críticos.
 
 \subsection{Componente de Validação e Filtragem}
 
 O componente de validação e filtragem tem como objetivo garantir a qualidade dos comentários gerados pelo motor de análise. Este componente aplica regras adicionais para eliminar comentários redundantes, identificar possíveis falsos positivos e priorizar feedback com maior relevância para os revisores humanos.
-
-A existência deste componente é fundamental para manter a confiança dos utilizadores na solução, evitando a sobrecarga de informação e assegurando que os comentários apresentados são claros, úteis e acionáveis.
 
 \subsection{Base de Conhecimento de Boas Práticas Internas}
 
@@ -246,11 +170,11 @@ A base de conhecimento de boas práticas internas armazena um conjunto formaliza
 
 A separação desta base de conhecimento do motor de análise permite a sua evolução independente, facilitando a atualização das boas práticas sem necessidade de alterações significativas na lógica do sistema.
 
-\subsection{Componente de Publicação de Resultados}
+\subsection{Componente de Disponibilização de Resultados}
 
-O componente de publicação de resultados é responsável por disponibilizar os comentários finais aos utilizadores, através da plataforma de controlo de versões. Este componente assegura que os comentários são corretamente associados às linhas de código relevantes ou apresentados como comentários gerais da \gls{PR}.
+O componente de disponibilização de resultados é responsável por devolver ao O2P os comentários de revisão gerados pelo sistema, permitindo a sua apresentação ao utilizador no contexto da ferramenta corporativa.
 
-Ao encapsular esta funcionalidade num componente dedicado, o sistema garante uma apresentação consistente do feedback e facilita a adaptação futura a diferentes plataformas de controlo de versões.
+Este componente assegura que o feedback produzido pela análise automática é estruturado de forma clara e consistente, facilitando a sua interpretação e utilização como apoio ao processo durante o processo de revisão de código.
 
 \subsection{Síntese do Desenho de Componentes}
 
@@ -258,18 +182,6 @@ A decomposição da solução em componentes bem definidos permite satisfazer os
 
 \section{Considerações de Implementação e Decisões Técnicas}\label{sec:consideracoes_implementacao}
 
-O desenho da solução proposta foi fortemente influenciado por um conjunto de decisões técnicas e considerações práticas, decorrentes tanto das características do problema como do contexto tecnológico da Processware. Esta secção apresenta as principais opções tomadas ao nível da implementação, bem como a sua fundamentação.
+A adoção de uma aplicação externa integrada no O2P, em detrimento de uma integração direta com o Bitbucket, reflete a preocupação em alinhar a solução com as práticas internas da Processware. Esta decisão reduz dependências externas, reforça o controlo do fluxo de análise e permite uma integração mais natural da inteligência artificial no processo de desenvolvimento.
 
-Uma das decisões estruturais mais relevantes foi a adoção de uma aplicação externa e independente da plataforma de controlo de versões. Em vez de integrar diretamente a lógica de análise baseada em inteligência artificial no Bitbucket, optou-se por desenvolver um serviço autónomo, capaz de interagir com a plataforma através de \textit{webhooks} e \glspl{API}. Esta abordagem permite reduzir o acoplamento com sistemas externos, facilitar a evolução futura da solução e reutilizar o sistema em diferentes contextos ou plataformas de controlo de versões.
-
-Do ponto de vista arquitetural, esta separação contribui também para uma maior flexibilidade na escolha das tecnologias utilizadas, permitindo alinhar a implementação com o \textit{stack} tecnológico já adotado pela Processware, nomeadamente no desenvolvimento de serviços backend em C\# e na construção de interfaces de apoio através de tecnologias web. Além disso, a existência de uma aplicação dedicada facilita a monitorização, o controlo de custos associados à utilização de \glspl{LLM} e a introdução de mecanismos de tolerância a falhas.
-
-Outra consideração relevante prende-se com a integração de ferramentas de análise estática já utilizadas no processo de desenvolvimento, como o SonarLint. A solução proposta não pretende substituir estas ferramentas, mas sim complementá-las. Enquanto o SonarLint é eficaz na deteção de problemas bem definidos e determinísticos, o sistema baseado em \glspl{LLM} foca-se na análise contextual e na geração de comentários mais expressivos, alinhados com as boas práticas internas. Esta complementaridade permite maximizar os benefícios de ambas as abordagens.
-
-No que diz respeito à utilização de \glspl{LLM}, foi considerada a necessidade de mitigar limitações conhecidas, como a geração de falsos positivos ou comentários genéricos. Por esse motivo, a arquitetura inclui componentes específicos para pré-processamento, validação e filtragem dos resultados, assegurando que apenas comentários relevantes e acionáveis são apresentados aos revisores humanos. Esta decisão reflete a preocupação em preservar a confiança dos utilizadores e evitar a introdução de ruído no processo de \gls{CR}.
-
-Adicionalmente, foram tidas em conta questões relacionadas com desempenho e escalabilidade. A segmentação das alterações de código, o controlo do volume de informação enviado ao motor de análise e a possibilidade de executar análises de forma assíncrona permitem adaptar a solução a diferentes cargas de trabalho, evitando impactos negativos no fluxo de desenvolvimento.
-
-Por fim, a solução foi concebida com foco na extensibilidade e manutenção a longo prazo. A separação entre a base de conhecimento de boas práticas internas e o motor de análise permite atualizar regras e orientações sem necessidade de alterações profundas no sistema. Esta característica é particularmente relevante em ambientes empresariais dinâmicos, onde padrões e convenções evoluem ao longo do tempo.
-
-Em conjunto, estas considerações e decisões técnicas asseguram que a solução proposta é não apenas funcional do ponto de vista conceptual, mas também viável, sustentável e alinhada com as necessidades reais da Processware. No capítulo seguinte será apresentada a implementação concreta da solução, detalhando as tecnologias utilizadas e a forma como cada componente foi materializado.
+A solução complementa ferramentas existentes, como o SonarLint, e preserva o papel central do julgamento humano, assegurando que a inteligência artificial atua como um mecanismo de apoio e não como um substituto do processo de revisão tradicional.

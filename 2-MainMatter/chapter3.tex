@@ -36,7 +36,7 @@ Outra limitação significativa prende-se com a compreensão reduzida do context
 
 Estas limitações motivaram a exploração de abordagens mais flexíveis e contextuais, capazes de compreender o código de forma mais abrangente e de gerar feedback alinhado com o contexto específico de cada projeto. As ferramentas baseadas em \glspl{LLM}, discutidas na secção seguinte, surgem como uma resposta a estas necessidades.
 
-\section{Ferramentas baseadas em \glspl{LLM} para Revisão de Código}
+\section{Ferramentas baseadas em LLMs para Revisão de Código}
 
 \subsection{Enquadramento Geral}
 
@@ -46,13 +46,13 @@ No contexto de \gls{CR}, a utilização de \glspl{LLM} permite ultrapassar algum
 
 A aplicação de \glspl{LLM} à revisão de código tem sido explorada tanto em ambientes de investigação como em soluções comerciais, refletindo o interesse crescente em integrar estas tecnologias nos fluxos de desenvolvimento existentes~\cite{tufano2024slr}. No entanto, a diversidade de abordagens adotadas evidencia que o domínio se encontra ainda em evolução.
 
-\subsection{Assistentes de \gls{CR} Comerciais}
+\subsection{Assistentes de \textit{Code Review} Comerciais}
 
 Nos últimos anos, várias soluções comerciais têm incorporado \glspl{LLM} como forma de apoiar tarefas relacionadas com a revisão de código. Estas ferramentas são, em geral, integradas em plataformas de controlo de versões ou disponibilizadas como serviços externos, sendo capazes de analisar alterações submetidas em \glspl{PR} e gerar comentários automáticos.
 
 Estudos recentes indicam que estas ferramentas podem reduzir o esforço manual dos revisores e melhorar a eficiência do processo de \gls{CR}, embora a qualidade e relevância dos comentários gerados varie significativamente entre soluções~\cite{airesults2024review, rahman2024empirical}. Em contextos industriais, observa-se que a falta de adaptação ao contexto organizacional e às práticas específicas de cada projeto constitui uma limitação relevante~\cite{google2024autocommenter, autoreviewer2025fieldstudy}.
 
-\subsection{Ferramentas Integradas em \glspl{IDE}}
+\subsection{Ferramentas Integradas em IDEs}
 
 Para além das soluções integradas em plataformas de controlo de versões, os \glspl{LLM} têm sido amplamente explorados em ferramentas integradas em \glspl{IDE}. Estas ferramentas fornecem feedback em tempo real durante o processo de escrita de código, incluindo sugestões de melhoria, explicações de código e deteção de potenciais problemas.
 
@@ -68,7 +68,7 @@ A análise automática de alterações de código requer o acesso estruturado à
 
 As alterações são frequentemente representadas sob a forma de \glspl{Diff}, embora possam ser transformadas em representações sintáticas, como \glspl{AST}, ou híbridas, dependendo dos objetivos da análise. A escolha da representação influencia diretamente a eficácia das técnicas aplicadas, conforme discutido na literatura sobre análise automática de código~\cite{allamanis2018survey, tufano2019deeplearning}.
 
-\section{Tecnologias para Integração de \glspl{LLM}}
+\section{Tecnologias para Integração de LLMs}
 
 A integração de \glspl{LLM} em sistemas de apoio à revisão de código é normalmente realizada através de arquiteturas baseadas em serviços intermediários, responsáveis pela orquestração da extração de dados, processamento das alterações e geração de feedback automático. Estas arquiteturas permitem maior flexibilidade e controlo sobre o comportamento do sistema~\cite{codeagent2024, autoreviewer2025fieldstudy}.
 
