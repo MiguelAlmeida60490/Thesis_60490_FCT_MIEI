@@ -22,6 +22,16 @@ As alterações processadas são analisadas por um \textit{software} baseado em 
 
 Os comentários gerados são apresentados ao programador no O2P, permitindo a sua análise e incorporação antes da submissão formal da \gls{PR}. Desta forma, o sistema atua como um mecanismo preventivo de qualidade, complementando as ferramentas de análise estática existentes e preservando o papel central da revisão final realizada pelos respetivos revisores de código.
 
+\section{Processamento e Utilização das Boas Práticas Internas}\label{sec:boas_praticas}
+
+As boas práticas internas utilizadas pelo motor de análise não resultam de um processo de aprendizagem automática ou de treino de modelos sobre dados históricos. Em vez disso, estas práticas correspondem a um conjunto de regras, convenções e recomendações já existentes na organização, atualmente documentadas em guias internos, normas de desenvolvimento e conhecimento partilhado entre equipas.
+
+No contexto da solução proposta, estas boas práticas são formalizadas e estruturadas de forma a poderem ser utilizadas como conhecimento de apoio durante o processo de análise automática. A sua integração no sistema é realizada através da disponibilização explícita deste conhecimento ao motor de análise baseado em \glspl{LLM}, sob a forma de contexto adicional que orienta a geração de comentários de revisão.
+
+Desta forma, o modelo de linguagem não é treinado com dados específicos da organização, mas sim utilizado como um mecanismo de interpretação e raciocínio sobre as alterações de código, tendo como referência um conjunto de boas práticas previamente definidas. Esta abordagem permite beneficiar das capacidades dos \glspl{LLM} sem incorrer nos custos, riscos e complexidades associados ao treino ou ajuste fino de modelos em ambientes empresariais.
+
+A base de conhecimento de boas práticas pode ser atualizada de forma independente, refletindo a evolução das normas internas da Processware, sem necessidade de alterações ao motor de análise ou à arquitetura global da solução.
+
 \section{Requisitos e Condições de Utilização}\label{sec:requisitos_condicoes}
 
 Estes elementos servem de base ao desenho da arquitetura e asseguram que a solução proposta se integra de forma consistente nos processos internos da organização.
@@ -185,3 +195,33 @@ A decomposição da solução em componentes bem definidos permite satisfazer os
 A adoção de uma aplicação externa integrada no O2P, em detrimento de uma integração direta com o Bitbucket, reflete a preocupação em alinhar a solução com as práticas internas da Processware. Esta decisão reduz dependências externas, reforça o controlo do fluxo de análise e permite uma integração mais natural da inteligência artificial no processo de desenvolvimento.
 
 A solução complementa ferramentas existentes, como o SonarLint, e preserva o papel central do julgamento humano, assegurando que a inteligência artificial atua como um mecanismo de apoio e não como um substituto do processo de revisão tradicional.
+
+\section{Plano de trabalho}
+
+Esta secção apresenta o plano de trabalho definido para a implementação e validação da solução proposta. O plano encontra-se estruturado em várias fases, organizadas de forma a assegurar uma progressão consistente entre a extração e processamento de dados, o desenvolvimento do sistema e a sua validação final.
+
+O planeamento das atividades teve em consideração a natureza incremental da solução, bem como a necessidade de integrar componentes de inteligência artificial de forma controlada e alinhada com os processos internos da organização. O diagrama de Gantt apresentado na Figura~\ref{fig:gantt} ilustra a distribuição temporal das principais fases do projeto, evidenciando a sobreposição de tarefas sempre que adequado, de modo a otimizar o tempo de desenvolvimento.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{5-Figures/Thesis_Images/gantt}
+    \caption{Diagrama de Gantt do plano de trabalho}
+    \label{fig:gantt}
+\end{figure}
+
+O plano de trabalho encontra-se organizado em várias fases principais, cada uma correspondendo a um conjunto de atividades com objetivos bem definidos:
+
+\subsection*{Extração e Processamento de Dados}
+Esta fase é dedicada à implementação dos mecanismos de acesso ao sistema de controlo de versões e à extração das alterações de código relevantes para análise. Inclui igualmente a organização e estruturação das boas práticas internas da organização, de forma a possibilitar a sua utilização como conhecimento de apoio durante a análise automática.
+
+\subsection*{Infraestrutura do LLM}
+Nesta fase é definida e configurada a infraestrutura necessária para a execução do motor de análise baseado em modelos de linguagem de grande escala, assegurando requisitos de desempenho, fiabilidade e controlo no acesso ao modelo.
+
+\subsection*{Implementação do Sistema}
+A fase de implementação do sistema contempla o desenvolvimento da lógica principal da solução, incluindo a comparação entre \textit{branches}, o pré-processamento das alterações de código, a integração das boas práticas internas e a geração de comentários de revisão baseados em inteligência artificial. Adicionalmente, esta fase inclui a implementação da interface de integração com o O2P, garantindo que os resultados da análise são apresentados de forma clara e acessível aos programadores.
+
+\subsection*{Desenvolvimento da Dissertação}
+Em paralelo com o desenvolvimento técnico, é realizada a redação do capítulo de implementação da dissertação, documentando as decisões técnicas adotadas e a arquitetura efetivamente implementada.
+
+\subsection*{Integração e Validações}
+A fase final é dedicada à integração dos diferentes componentes do sistema no processo de revisão de código da Processware e à realização de um conjunto de validações, com o objetivo de assegurar o comportamento esperado da solução e a qualidade do feedback gerado antes da conclusão do trabalho.
