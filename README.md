@@ -53,6 +53,8 @@ Clique nas imagens para abrir o PDF completo.
 [![Página 33](./github_aux_images/page-33.png)](./template.pdf)
 [![Página 34](./github_aux_images/page-34.png)](./template.pdf)
 [![Página 35](./github_aux_images/page-35.png)](./template.pdf)
+[![Página 36](./github_aux_images/page-36.png)](./template.pdf)
+[![Página 37](./github_aux_images/page-37.png)](./template.pdf)
 
 
 🔗 **[Visualizar / Download PDF Completo](./template.pdf)**
