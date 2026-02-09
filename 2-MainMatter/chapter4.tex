@@ -12,6 +12,13 @@ Este capítulo apresenta a solução proposta para a integração de técnicas d
 
 Ao contrário de abordagens reativas baseadas em eventos da plataforma de controlo de versões, a solução proposta assenta num modelo proativo, no qual a análise das alterações de código é desencadeada antes da criação de uma \gls{PR}. Esta decisão permite alinhar a solução com as práticas existentes na Processware e reforçar o papel da inteligência artificial como mecanismo de apoio à qualidade do código desde fases iniciais do desenvolvimento.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{5-Figures/Thesis_Images/fluxo_code_review}
+    \caption{Comparação entre o fluxo atual de revisão de código e o fluxo de revisão de código da solução proposta}
+    \label{fig:fluxo_code_review}
+\end{figure}
+
 \section{Visão Geral}
 
 A solução proposta consiste numa aplicação externa integrada com o software interno da Processware, o O2P, concebida para apoiar a revisão de código através da análise automática de diferenças entre ramos de desenvolvimento. O sistema permite comparar uma \textit{branch} de trabalho com a respetiva \textit{branch} base, identificando alterações relevantes e gerando comentários de revisão alinhados com as boas práticas internas da organização.
@@ -21,6 +28,13 @@ O sistema é acionado pelo programador no O2P, numa fase anterior à criação d
 As alterações processadas são analisadas por um \textit{software} baseado em \glspl{LLM}, que combina o código alterado com conhecimento derivado de boas práticas internas e de revisões anteriores. Este mecanismo permite gerar comentários de revisão em linguagem natural, identificando potenciais problemas, desvios a padrões definidos e oportunidades de melhoria.
 
 Os comentários gerados são apresentados ao programador no O2P, permitindo a sua análise e incorporação antes da submissão formal da \gls{PR}. Desta forma, o sistema atua como um mecanismo preventivo de qualidade, complementando as ferramentas de análise estática existentes e preservando o papel central da revisão final realizada pelos respetivos revisores de código.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{5-Figures/Thesis_Images/fluxo_AI}
+    \caption{Fluxo de execução do processo de análise automática das alterações de código antes da criação de uma \gls{PR}}
+    \label{fig:fluxo_AI}
+\end{figure}
 
 \section{Processamento e Utilização das Boas Práticas Internas}\label{sec:boas_praticas}
 
@@ -63,6 +77,23 @@ Os requisitos funcionais definem as capacidades que o sistema deve oferecer para
     Os comentários devem ser apresentados ao utilizador no O2P antes da criação da \gls{PR}.
 \end{itemize}
 
+\begin{table}[h]
+\centering
+\caption{Requisitos funcionais da solução proposta}
+\label{tab:requisitos_funcionais}
+\begin{tabular}{|c|p{12cm}|}
+\hline
+\textbf{ID} & \textbf{Descrição} \\ \hline
+RF1 & Seleção da \textit{branch} de trabalho e da \textit{branch} base para análise. \\ \hline
+RF2 & Extração automática das diferenças entre os ramos selecionados, incluindo o \gls{Diff} e os ficheiros modificados. \\ \hline
+RF3 & Pré-processamento das alterações de código, incluindo filtragem e organização da informação relevante. \\ \hline
+RF4 & Análise automática das alterações utilizando \glspl{LLM} para identificação de problemas e oportunidades de melhoria. \\ \hline
+RF5 & Integração explícita de boas práticas internas da Processware no processo de análise. \\ \hline
+RF6 & Geração de comentários de revisão claros, concisos e em linguagem natural. \\ \hline
+RF7 & Apresentação dos comentários gerados no O2P antes da criação da \gls{PR}. \\ \hline
+\end{tabular}
+\end{table}
+
 \subsection{Requisitos Não Funcionais}
 
 A solução deve igualmente cumprir um conjunto de requisitos não funcionais:
@@ -84,6 +115,21 @@ A solução deve igualmente cumprir um conjunto de requisitos não funcionais:
     A arquitetura deve permitir a evolução futura da solução.
 \end{itemize}
 
+\begin{table}[h]
+\centering
+\caption{Requisitos não funcionais da solução proposta}
+\label{tab:requisitos_nao_funcionais}
+\begin{tabular}{|c|p{12cm}|}
+\hline
+\textbf{ID} & \textbf{Descrição} \\ \hline
+RNF1 & Integração nativa com os sistemas internos da Processware, em particular o O2P. \\ \hline
+RNF2 & Baixo acoplamento a plataformas externas de controlo de versões, como o Bitbucket. \\ \hline
+RNF3 & Capacidade de suportar múltiplas análises em paralelo, garantindo escalabilidade. \\ \hline
+RNF4 & Tempo de resposta compatível com o fluxo de trabalho do programador. \\ \hline
+RNF5 & Arquitetura orientada à manutenibilidade e extensibilidade futura da solução. \\ \hline
+\end{tabular}
+\end{table}
+
 \subsection{Condições de Utilização}
 
 O funcionamento do sistema pressupõe as seguintes condições:
@@ -94,6 +140,20 @@ O funcionamento do sistema pressupõe as seguintes condições:
     \item \textbf{CU3 -- Supervisão humana das recomendações;}
     \item \textbf{CU4 -- Utilização do O2P como ponto central do fluxo de desenvolvimento;}
 \end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Condições de utilização da solução}
+\label{tab:condicoes_utilizacao}
+\begin{tabular}{|c|p{12cm}|}
+\hline
+\textbf{ID} & \textbf{Descrição} \\ \hline
+CU1 & Utilização de um sistema de controlo de versões baseado em ramos. \\ \hline
+CU2 & Existência de boas práticas internas documentadas e acessíveis. \\ \hline
+CU3 & Supervisão humana das recomendações geradas automaticamente pelo sistema. \\ \hline
+CU4 & Utilização do O2P como ponto central do fluxo de desenvolvimento. \\ \hline
+\end{tabular}
+\end{table}
 
 \section{Arquitetura Geral da Solução}\label{sec:arquitetura_geral}
 
