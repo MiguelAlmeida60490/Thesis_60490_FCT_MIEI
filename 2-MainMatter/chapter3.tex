@@ -50,7 +50,7 @@ A aplicação de \glspl{LLM} à revisão de código tem sido explorada tanto em 
 
 Nos últimos anos, várias soluções comerciais têm incorporado \glspl{LLM} como forma de apoiar tarefas relacionadas com a revisão de código. Estas ferramentas são, em geral, integradas em plataformas de controlo de versões ou disponibilizadas como serviços externos, sendo capazes de analisar alterações submetidas em \glspl{PR} e gerar comentários automáticos.
 
-Estudos recentes indicam que estas ferramentas podem reduzir o esforço manual dos revisores e melhorar a eficiência do processo de \gls{CR}, embora a qualidade e relevância dos comentários gerados varie significativamente entre soluções~\cite{airesults2024review, rahman2024empirical}. Em contextos industriais, observa-se que a falta de adaptação ao contexto organizacional e às práticas específicas de cada projeto constitui uma limitação relevante~\cite{google2024autocommenter, autoreviewer2025fieldstudy}.
+Estudos recentes indicam que estas ferramentas podem reduzir o esforço manual dos revisores e melhorar a eficiência do processo de \gls{CR}, embora a qualidade e relevância dos comentários gerados varie significativamente entre soluções~\cite{airesults2024review}. Em contextos industriais, observa-se que a falta de adaptação ao contexto organizacional e às práticas específicas de cada projeto constitui uma limitação relevante~\cite{google2024autocommenter}.
 
 \subsection{Ferramentas Integradas em IDEs}
 
@@ -60,7 +60,7 @@ Apesar do impacto positivo na produtividade individual, estas soluções não su
 
 \subsection{Limitações das Soluções Existentes}
 
-Apesar do potencial demonstrado pelas ferramentas baseadas em \glspl{LLM}, estudos empíricos evidenciam limitações relacionadas com a consistência do feedback, a previsibilidade do comportamento dos modelos e a sua integração nos fluxos de desenvolvimento existentes~\cite{rahman2024empirical, autoreviewer2025fieldstudy}. Adicionalmente, questões de privacidade, custos computacionais e controlo do comportamento dos modelos continuam a constituir desafios relevantes em ambientes empresariais.
+Apesar do potencial demonstrado pelas ferramentas baseadas em \glspl{LLM}, estudos empíricos evidenciam limitações relacionadas com a consistência do feedback, a previsibilidade do comportamento dos modelos e a sua integração nos fluxos de desenvolvimento existentes~\cite{liang2024automation, tufano2024slr}. Adicionalmente, questões de privacidade, custos computacionais e controlo do comportamento dos modelos continuam a constituir desafios relevantes em ambientes empresariais.
 
 \section{Tecnologias para Extração e Processamento de Alterações de Código}
 
@@ -70,7 +70,7 @@ As alterações são frequentemente representadas sob a forma de \glspl{Diff}, e
 
 \section{Tecnologias para Integração de LLMs}
 
-A integração de \glspl{LLM} em sistemas de apoio à revisão de código é normalmente realizada através de arquiteturas baseadas em serviços intermediários, responsáveis pela orquestração da extração de dados, processamento das alterações e geração de feedback automático. Estas arquiteturas permitem maior flexibilidade e controlo sobre o comportamento do sistema~\cite{codeagent2024, autoreviewer2025fieldstudy}.
+A integração de \glspl{LLM} em sistemas de apoio à revisão de código é normalmente realizada através de arquiteturas baseadas em serviços intermediários, responsáveis pela orquestração da extração de dados, processamento das alterações e geração de feedback automático. Estas arquiteturas permitem maior flexibilidade e controlo sobre o comportamento do sistema~\cite{codeagent2024}.
 
 No entanto, esta integração levanta desafios técnicos relacionados com latência, custos computacionais e robustez do sistema, exigindo mecanismos adicionais de controlo e monitorização~\cite{liang2024automation}.
 
